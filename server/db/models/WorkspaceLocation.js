@@ -6,6 +6,7 @@ const pointSchema = mongoose.Schema({
 });
 
 const workspaceLocationSchema = mongoose.Schema({
+  workspace: mongoose.Schema.ObjectId,
   workspaceSlug: String,
   workspaceId: {
     type: Number,

@@ -1,25 +1,34 @@
 require('../');
+const axios = require('axios');
+const path = require('path')
 const fs = require('fs');
 const WorkspaceLocation = require('../models/WorkspaceLocation');
+const descriptionService = 'http://localhost:6060/api/workspace-descriptions';
 
 //read geojson files and parse into arrays
-const data1 = JSON.parse(fs.readFileSync('./geojsonData1.json'));
-const data2 = JSON.parse(fs.readFileSync('./geojsonData2.json'));
-const data3 = JSON.parse(fs.readFileSync('./geojsonData3.json'));
+const data1 = JSON.parse(fs.readFileSync(path.resolve(__dirname, './geojsonData1.json')));
+
+const data2 = JSON.parse(fs.readFileSync(path.resolve(__dirname, './geojsonData2.json')));
+
+const data3 = JSON.parse(fs.readFileSync(path.resolve(__dirname, './geojsonData3.json')));
 
 // concatenate data into one array
 const addresses = [...data1, ...data2, ...data3];
 
+// get workspace descriptions
+const getDescriptions = async () => {
+  const descriptions = await axios.get(descriptionService);
+  return descriptions;
+}
+
 // map addresses into shape of WorkspaceLocation schema
-const prepLocations = addresses.map((geojson, i) => {
+const prepLocations = addresses.map((geojson) => {
   const { 
     streetName, streetNumber, city, formattedAddress, countryCode,
     extra: { neighborhood }, latitude, longitude, country, zipcode,
     administrativeLevels: { level1short }
   } = geojson;
   return {
-    workspaceSlug: `workspace-${i}`,
-    workspaceId: i,
     rawAddress: formattedAddress,
     formattedAddress,
     neighborhood,
@@ -39,8 +48,21 @@ const prepLocations = addresses.map((geojson, i) => {
 
 // create records based on addresses
 const createLocations = async () => {
-  const locations = await WorkspaceLocation.create(prepLocations);
-  console.log(`${locations.length} records generated`);
+  const { data } = await getDescriptions();
+
+  const workspaceLocations = data.map((desc) => {
+    let record = prepLocations[desc.id];
+    const { id, url, _id } = desc;
+    return {
+      ...record,
+      workspaceId: id,
+      workspaceSlug: url,
+      workspace: _id
+    };
+  });
+
+  const records = await WorkspaceLocation.create(workspaceLocations);
+  console.log(`${records.length} records created`);
   process.exit();
 };
 
@@ -48,29 +70,18 @@ const createLocations = async () => {
 const deleteLocations = async () => {
   await WorkspaceLocation.deleteMany({});
   console.log(`Workspace locations deleted`);
-  process.exit();
 };
 
 // accept command line arguments and process request
 const seed = async () => {
   try {
-    const option = process.argv[2];
-    switch(option) {
-      case '-g':
-        await createLocations();
-      case '-d': 
-        await deleteLocations();
-      default:
-        console.log(
-          `\tUnknown command. \n\trun 'node seeder.js -g' to generate records\n\tor 'node seeder.js -d' to clear existing WorkspaceLocations collection`
-        );
-    }
-    process.exit();
+    await deleteLocations();
+    await createLocations();
   } catch (error) {
     console.log(error);
-    process.exit();
+    process.exit(1);
   }
-
 }
 
 seed();
+

@@ -7,15 +7,30 @@
   "engines": {
     "node": ">=6.13.0"
   },
-  "scripts": {},
+  "scripts": {
+    "dev": "nodemon server/server.js",
+    "dev-build": "webpack --watch",
+    "build": "webpack",
+    "seed": "node server/db/data/seeder.js"
+  },
   "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "axios": "^0.21.1",
+    "babel-loader": "^8.2.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.11",
     "morgan": "^1.10.0",
-    "node-geocoder": "^3.27.0"
+    "node-geocoder": "^3.27.0",
+    "webpack": "^5.13.0",
+    "webpack-cli": "^4.3.1"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "css-loader": "^5.0.1",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "style-loader": "^2.0.0"
   }
 }

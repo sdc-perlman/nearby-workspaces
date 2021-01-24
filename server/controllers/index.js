@@ -36,7 +36,8 @@ exports.getNearbyBuildings = asyncHandler( async (req, res, next) => {
         $geometry: origin.geometry,
         $maxDistance: 5000
       }
-    }
+    },
+    workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
   });
 
   res.status(200).json({ origin, nearbyWorkspaces });
