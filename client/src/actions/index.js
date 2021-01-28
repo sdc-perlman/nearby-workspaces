@@ -1,12 +1,13 @@
 import { amenitiesService, photoService, descriptionService} from '../data/data.js';
+import axios from 'axios';
 const nearbyAPI = 'http://localhost:5001/nearbyworkspaces-api';
 const amenitiesAPI = '';
 const descriptionAPI = '';
 const photoAPI = '';
 
-export const getWorkspaces = () => {
+export const getWorkspaces = (url) => {
   return new Promise(async (resolve, reject) => {
-    const id = parseInt(window.location.pathname.split('/')[2]);
+    const id = parseInt(url.split('/')[2]);
     if (typeof id !== 'number') {
       resolve(false);
     }
@@ -20,7 +21,7 @@ export const getWorkspaces = () => {
   .catch(error => console.log(error));
 };
 
-const getDescription = (id) => {
+export const getDescription = (id) => {
   return new Promise(async (resolve, reject) => {
     const description = {};
     description.data = descriptionService.filter(desc => desc.workspaceId === id)[0];
@@ -28,7 +29,7 @@ const getDescription = (id) => {
   });
 };
 
-const getPhoto = (id) => {
+export const getPhoto = (id) => {
   return new Promise( async (resolve, reject) => {
     const photo = {};
     photo.data = photoService.filter(pic => pic.workspaceId === id)[0];
@@ -36,7 +37,7 @@ const getPhoto = (id) => {
   });
 };
 
-const getAmenities = async (id) => {
+export const getAmenities = async (id) => {
   return new Promise( async (resolve, reject) => {
     const amenities = {};
     amenities.data = amenitiesService.filter(am => am.workspaceId === id)[0];

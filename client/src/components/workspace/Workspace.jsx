@@ -1,4 +1,4 @@
-const { useEffect, useState } = React;
+import React, { useEffect, useState } from 'react';
 import LoadingWorkspace from './LoadingWorkspace.jsx';
 import { getWorkspaceInfo } from '../../actions/';
 

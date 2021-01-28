@@ -1,16 +1,17 @@
-const { useState, useEffect } = React;
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
 import { getWorkspaces } from './actions/'
 import Title from './components/Title.jsx';
 import WorkspaceContainer from './components/WorkspaceContainer.jsx';
 
-const App = () => {
+const NearbyWorkspaces = () => {
   const [locs, setLocs] = useState(null);
 
   // get workspaces and set to state
   useEffect( async () => {
     let mnt = true;
-    const locations = await getWorkspaces();
+    const locations = await getWorkspaces(window.location.pathname);
     if (mnt) {
       if (locations === false) {
         console.log('error');
@@ -29,4 +30,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<NearbyWorkspaces />, document.getElementById('nearby-workspaces'));

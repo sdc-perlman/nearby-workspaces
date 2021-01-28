@@ -1,3 +1,4 @@
+import React from 'react';
 import Workspace from './workspace/workspace.jsx';
 
 export default ({ locations }) => {

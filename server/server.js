@@ -1,12 +1,14 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../', '.env')});
 const morgan = require('morgan');
+const cors = require('cors');
 const express = require('express');
 const app = express();
 require('./db');
 const { getAddress, getNearbyBuildings, notFound, errorHandler} = require('./controllers');
 
 app.use(morgan('dev'));
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
 

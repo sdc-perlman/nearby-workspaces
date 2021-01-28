@@ -12,8 +12,9 @@ module.exports = {
     rules: [ 
       { 
         test: /\.js/,
+        exclude: /node_modules/,
         use: 'babel-loader', 
-        include: SRC,
+        include: SRC        
       },
       {
         test: /\.css$/i,
