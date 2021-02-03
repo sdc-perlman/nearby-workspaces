@@ -55,5 +55,5 @@ exports.notFound = asyncHandler( async (req, res, next) => {
 // return an simple response when errors thrown in endpoints
 exports.errorHandler = (err, req, res, next) => {
   console.log(err);
-  res.status(err.status || 500).send({ status: err.status || 500, message: err.message});
+  res.status(err.status || 500).send({ success: false, status: err.status || 500, message: err.message});
 };

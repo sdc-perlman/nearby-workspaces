@@ -6,7 +6,7 @@ module.exports = {
   entry: ['@babel/polyfill', SRC + '/index.jsx'],
   output: {
     path: PUB,
-    filename: 'bundle.js'
+    filename: 'nearby.js'
   },
   module: {
     rules: [ 

@@ -1,5 +1,10 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+}
+
 .nb-container {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   border: 1px solid #ddd;
   display: block;
   border-radius: 3px;
@@ -8,8 +13,17 @@
   margin-bottom: 15px;
 }
 
+.nb-container > a:hover {
+  text-decoration: none;
+  color:rgb(137, 137, 137);
+}
+
+.nb-container > a {
+  text-decoration: none;
+}
+
 .nb-grid {
-  height: 174px;
+  height: 160px;
   width: 100%;
   display: grid;
   grid-template-columns: 40% 60%;
@@ -24,6 +38,7 @@
 }
 
 .nb-section-title {
+  font-family: 'Roboto', sans-serif;
   font-size: 2rem;
   font-weight: 600;
   line-height: 2.75rem;
@@ -31,6 +46,7 @@
 }
 
 .nb-description-title {
+  color: #000;
   font-size: 1.25rem;
   line-height: 2rem;
   margin-bottom: 0px;
@@ -46,16 +62,21 @@
 
 .nb-photo-container {
   background: rgb(247, 247, 247);
-  background-position: center;
-  background-size: cover;
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
+.nb-photo {
+  width: 450px;
+  top: -25%;
+  left: -25%;
+  transform: translateY(-25%) translateX(-25%);
+}
+
 .nb-amenities-list {
   padding: 0;
-  margin: 0;
+  margin-top: 16px;
   list-style: none;
 }
 
@@ -63,8 +84,6 @@
   margin: 0;
   display: inline;
 }
-
-
 
   /* MEDIA QUERIES */
 
@@ -74,9 +93,17 @@
     height: auto;
   }
   .nb-photo-container {
-    height: 350px !important;
+    height: 350px ;
     width: 100%;
   }
+
+  .nb-photo {
+    width: auto;
+    height: 375px;
+    transform: translateY(0px);
+    transform: translateX(0px);
+  }
+
   .nb-pricing-container {
     flex-direction: column;
     align-items: center;
@@ -87,11 +114,17 @@
     width: 100%;
     text-align: center;
   }
+
 }
 
 @media (max-width: 400px) {
   .nb-photo-container {
     height: 250px !important;
+  }
+
+  .nb-photo {
+    width: auto;
+    height: 250px;
   }
 }
 
@@ -113,19 +146,14 @@
 }
 
 .dark-text {
-  color: rgb(76, 76, 76);
+  color: #000;
 }
 
 .small-text {
   font-size: .9em;
 }
 
-p {
-  margin: 0px !important;
-}
 
-a:hover {
-  text-decoration: none;
-  color:rgb(137, 137, 137);
-}
+
+
 

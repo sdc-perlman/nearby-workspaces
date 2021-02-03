@@ -14,7 +14,7 @@ const NearbyWorkspaces = () => {
     const locations = await getWorkspaces(window.location.pathname);
     if (mnt) {
       if (locations === false) {
-        console.log('error');
+        setLocs(false);
       } else {
         setLocs(locations);
       }      
@@ -22,12 +22,22 @@ const NearbyWorkspaces = () => {
     return () => mnt = false;
   }, []);
 
+
+
+  if (locs === false || locs === null) {
+    return <></>
+  }
+
+  if (locs.length === 0) {
+    return <></>
+  }
+
   return (
-    <div className="">
+    <>
       <Title />
       <WorkspaceContainer locations={ locs }/>
-    </div>
+    </>
   );
 };
 
-ReactDOM.render(<NearbyWorkspaces />, document.getElementById('nearby-workspaces'));
+ReactDOM.render(<NearbyWorkspaces />, document.getElementById('nearby'));
