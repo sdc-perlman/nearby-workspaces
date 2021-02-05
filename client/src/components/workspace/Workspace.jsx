@@ -7,12 +7,10 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
   const [space, setSpace] = useState(details);
   // use passed in id to get details for given workspace
   if (space === null) {
-    console.log('fetching')
     getWorkspaceInfo(workspaceId)
       .then(res => setSpace(res))
       .catch(err => {
         setSpace(false);
-        console.log(err.message);
       })
   }
 
@@ -26,17 +24,24 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
     return <></>
   }
 
-  const { amenities, photo, description, rates } = space;
-  console.log(rates);
+  let { amenities, photo, description, rates } = space;
+
+
   // conditionally render array of amenities data
-  const Amenities = () => amenities.amenities ? (
-      <>
-      <li>{ amenities.amenities[0] }{' '}</li>
-          { amenities.amenities.slice(1).map(am => (
-          <li key={`${description.name}-${am}`}>&#8226; { am } </li> )
-          )}
-      </>
-    ) : <></>;
+  const Amenities = ({data}) => {
+    if (!data) return <></>
+      const rest = data.amenities.length - 5;
+      return (
+        <>
+            { data.amenities.slice(0, 5).map(am => (
+              <li key={`${am.name}-${am.id}`}>&#8226; { am.name } </li> )
+            )}
+            <br/>
+            { rest > 0 && <li> + {rest} more</li>}
+        </>
+      );
+  }
+
 
   // insert any available data into workspace-card
   return (
@@ -54,7 +59,7 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
             </div>
             <div className="light-text small-text bold-text">
               <ul className="nb-amenities-list">
-                <Amenities />
+                <Amenities data={amenities[0]}/>
               </ul>
             </div>
           </div>

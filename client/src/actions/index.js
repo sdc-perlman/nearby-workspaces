@@ -1,7 +1,7 @@
 import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 import axios from 'axios';
 const nearbyAPI = 'http://localhost:5001/api/nearbyworkspaces';
-const amenitiesAPI = '';
+const amenitiesAPI = 'http://localhost:4001/amenities-api/amenity';
 const descriptionAPI = 'http://localhost:6060/api/workspace-description';
 const ratesAPI = 'http://localhost:4000/workspace-api/workspace';
 const photoAPI = 'http://localhost:6001/api/photos';
@@ -9,11 +9,12 @@ const photoAPI = 'http://localhost:6001/api/photos';
 // get list of workspaces near given id
 export const getWorkspaces = (url) => {
   return new Promise(async (resolve, reject) => {
-    const extractId = url.split('/')[2];
+    let splitUrl = window.location.pathname.split('/').filter(el => el);
+    let rawId =  splitUrl[splitUrl.length - 1];
 
-    const id = parseInt(extractId);
+    const id = parseInt(rawId);
 
-    if (isNaN(extractId)) {
+    if (isNaN(id)) {
       resolve(false);
       return;
     }
@@ -25,7 +26,6 @@ export const getWorkspaces = (url) => {
       }
       resolve(data.nearbyWorkspaces);
     } catch (error) {
-      console.log(error)
       reject(error);
     }
   })
@@ -34,39 +34,20 @@ export const getWorkspaces = (url) => {
 
 // getters for different services
 export const getDescription = async (id) => {
-  try {
-    const description = await axios.get(`${descriptionAPI}/${id}`);
-    return description;
-  } catch (error) {
-    return false;
-  }
+    return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
 };
 
 export const getPhoto = (id) => {
-  // return new Promise( async (resolve, reject) => {
-  //   console.log(api);
-  //   const photo = {};
-  //   photo.data = photoService.filter(pic => pic.workspaceId === id)[0];
-  //   resolve(photo);
-  // });
-  return axios.get(`${photoAPI}/${id}`);
+  return axios.get(`${photoAPI}/${id}`).catch(() => false);
 };
 
 export const getAmenities = async (id) => {
-  return new Promise( async (resolve, reject) => {
-    const amenities = {};
-    amenities.data = amenitiesService.filter(am => am.workspaceId === id)[0];
-    resolve(amenities);
-  });
+  return axios.get(`${amenitiesAPI}/${id}`).catch(() => false);
 };
 
 export const getRates = async (id) => {
-  try {
-    const rates = await axios.get(`${ratesAPI}/${id}`);
-    return rates;
-  } catch (error) {
-    return false;
-  }
+    return axios.get(`${ratesAPI}/${id}`).catch(() => false);
+  
 }
 
 // aggregate data from all getters into one object
@@ -88,9 +69,9 @@ export const getWorkspaceInfo = (id) => {
 
       resolve(info);
     } catch (error) {
-      console.log(error)
       reject(error);
     }
   })
     .catch(err => false);
 };
+
