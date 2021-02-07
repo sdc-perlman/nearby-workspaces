@@ -7,7 +7,7 @@ const ratesAPI = 'http://localhost:4000/workspace-api/workspace';
 const photoAPI = 'http://localhost:6001/api/photos';
 
 // get list of workspaces near given id
-export const getWorkspaces = (url) => {
+export const getWorkspaces = () => {
   return new Promise(async (resolve, reject) => {
     let splitUrl = window.location.pathname.split('/').filter(el => el);
     let rawId =  splitUrl[splitUrl.length - 1];
