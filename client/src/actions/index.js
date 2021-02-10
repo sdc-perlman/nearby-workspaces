@@ -1,10 +1,10 @@
 import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 import axios from 'axios';
-const nearbyAPI = 'http://localhost:5001/api/nearbyworkspaces';
-const amenitiesAPI = 'http://localhost:4001/amenities-api/amenity';
-const descriptionAPI = 'http://localhost:6060/api/workspace-description';
-const ratesAPI = 'http://localhost:4000/workspace-api/workspace';
-const photoAPI = 'http://localhost:6001/api/photos';
+const nearbyAPI = '/api/nearbyworkspaces';
+const amenitiesAPI = '/amenities-api/amenity';
+const descriptionAPI = '/api/workspace-description';
+const ratesAPI = '/workspace-api/workspace';
+const photoAPI = '/api/photos';
 
 // get list of workspaces near given id
 export const getWorkspaces = () => {
