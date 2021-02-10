@@ -11,26 +11,36 @@ AWS.config.getCredentials((err) => {
   else console.log("Access key:", AWS.config.credentials.accessKeyId);
 });
 
-const jsName = 'nearby.js';
-const cssName = 'reset.css';
-
-const jsObject = {Bucket: process.env.AWS_S3_BUCKET, Key: jsName, Body: bundle.toString()};
-const cssObject = {Bucket: process.env.AWS_S3_BUCKET, Key: cssName, Body: css.toString()};
-
-const uploadBundle = async () => new Promise(async (resolve, reject) => {
+const uploadBundle = async () => {
+  const jsName = 'nearby.js';
+  const cssName = 'reset.css';
+  const jsObject = {Bucket: process.env.AWS_S3_BUCKET, Key: jsName, Body: bundle.toString()};
+  const cssObject = {Bucket: process.env.AWS_S3_BUCKET, Key: cssName, Body: css.toString()};
   const s3 = new AWS.S3({apiVersion: '2006-03-01'});
   try {
     await s3.putObject(jsObject).promise();
     console.log("Successfully uploaded bundle to " + process.env.AWS_S3_BUCKET + "/" + jsName);
     await s3.putObject(cssObject).promise();
     console.log("Successfully uploaded bundle to " + process.env.AWS_S3_BUCKET + "/" + cssName);
-    resolve();
   } catch (err) {
     console.log(err)
-    reject();
   }
-})
+};
+
+const uploadDev = async () => {
+  const jsName = 'dev-nearby.js';
+  const jsObject = {Bucket: process.env.AWS_S3_BUCKET, Key: jsName, Body: bundle.toString()};
+  const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+  try {
+    await s3.putObject(jsObject).promise();
+    console.log("Successfully uploaded bundle to " + process.env.AWS_S3_BUCKET + "/" + jsName);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 // uploadBundle();
 exports.upload = uploadBundle;
+exports.uploadDev = uploadDev;
 
