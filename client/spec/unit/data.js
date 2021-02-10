@@ -2,24 +2,57 @@ exports.nearbyResults = {"data": {"origin":{"rawAddress":"4011 S Central Ave, Lo
 
 exports.addressResult = {"rawAddress":"4011 S Central Ave, Los Angeles, CA 90011, USA","coordinates":[34.0105442,-118.2569161],"formattedAddress":"4011 S Central Ave, Los Angeles, CA 90011, USA","streetName":"South Central Avenue","streetNumber":"4011","neighborhood":"South Los Angeles","city":"Los Angeles","state":"CA","country":"United States","countryCode":"US","zipcode":"90011","_id":"6007ecc57f40ee033f605a88","geometry":{"type":"Point","coordinates":[-118.2569161,34.0105442],"_id":"6007ecc57f40ee033f605a89"},"workspaceId":1,"workspaceSlug":"hammock-tousled-hella-tofu-keffiyeh-air-plant","workspace":"6007cf72a86dc57d8a0e544e","__v":0}
 
-exports.description = {
-  data: {
-    name: "Workspace #3",
-    price: 128,
-    workspaceId: 1
-  }
+const description = {
+  name: "Workspace #1",
+  price: 128,
+  workspaceId: 1
 };
 
-exports.photo = {
-  data: {
-    photo: "https://images.unsplash.com/photo-1511084891045-5415f5b81475?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
-    workspaceId: 1
-  }
+const photo = {
+  url: "photo.jpg",
+  workspaceId: 1
 };
 
-exports.amenities = {
-  data: {
-    amenities: ["Gym", "Lounge", "Dogs allowed"],
-    workspaceId: 1
+const amenities = [ {
+    amenities: [
+      {id: 100, name: 'Showers'},
+      {id: 100, name: 'Pet Friendly'},
+      {id: 100, name: 'Coffee'},
+      {id: 100, name: 'Tables'},
+    ],
+    id: 1
   }
-}
+  
+];
+
+const rates = { membership_rate: 100 }
+
+exports.data = {
+  rates,
+  amenities,
+  photo,
+  description
+};
+
+exports.noData = {
+  rates: false,
+  amenities: false,
+  photo: false,
+  description: false
+};
+
+exports.locations = [
+  {
+      workspaceId: 1,
+      neighborhood: 'test 1'
+  },{
+      workspaceId: 2,
+      neighborhood: 'test 2'
+  },{
+      workspaceId: 3,
+      neighborhood: 'test 3',
+  }
+];
+
+
+exports.location = {workspaceId: 1, neighborhood: 'test neighborhood'};

@@ -13,7 +13,7 @@
     "build": "webpack",
     "seed": "node server/db/data/seeder.js",
     "test-server": "jest server/spec",
-    "test-client": "jest client/spec"
+    "test-unit": "jest client/spec/unit"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
