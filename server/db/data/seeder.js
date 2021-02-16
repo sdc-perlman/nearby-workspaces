@@ -3,7 +3,7 @@ const axios = require('axios');
 const path = require('path')
 const fs = require('fs');
 const WorkspaceLocation = require('../models/WorkspaceLocation');
-const descriptionService = 'http://localhost:6060/api/workspace-descriptions';
+const descriptionService = `${process.env.DESCRIPTION_API || 'http://localhost:6060'}/api/workspace-descriptions`;
 
 //read geojson files and parse into arrays
 const data1 = JSON.parse(fs.readFileSync(path.resolve(__dirname, './geojsonData1.json')));
