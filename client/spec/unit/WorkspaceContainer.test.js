@@ -8,7 +8,7 @@ const Adapter = require('@wojtekmaj/enzyme-adapter-react-17');
 const WorkspaceContainer = require('../../src/components/WorkspaceContainer.jsx').default;
 
 enzyme.configure({ adapter: new Adapter() });
-const { shallow, mount } = enzyme;
+const { mount } = enzyme;
 const { data, locations } = require('./data');
 
 describe('WorkspaceContainer', () => {

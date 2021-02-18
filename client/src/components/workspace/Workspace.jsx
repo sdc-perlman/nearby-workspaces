@@ -26,14 +26,13 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
 
   let { amenities, photo, description, rates } = space;
 
-
   // conditionally render array of amenities data
-  const Amenities = ({data}) => {
-    if (!data) return <></>
-      const rest = data.amenities.length - 5;
+  const Amenities = ({ amenities: { amenities }}) => {
+    if (!amenities) return <></>
+      const rest = amenities.length - 5;
       return (
         <>
-            { data.amenities.slice(0, 5).map(am => (
+            { amenities.slice(0, 5).map(am => (
               <li key={`${am.name}-${am.id}`}>&#8226; { am.name } </li> )
             )}
             <br/>
@@ -59,7 +58,7 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
             </div>
             <div className="light-text small-text bold-text">
               <ul className="nb-amenities-list">
-                <Amenities data={amenities[0]}/>
+                <Amenities amenities={amenities}/>
               </ul>
             </div>
           </div>
