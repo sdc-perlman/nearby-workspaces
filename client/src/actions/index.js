@@ -22,6 +22,7 @@ export const getWorkspaces = () => {
 
     try {
       const { data } = await axios.get(`${nearbyAPI}/buildings/${id}`);
+      console.log(data);
       if (data.success === false) {
         resolve(false);
       }
