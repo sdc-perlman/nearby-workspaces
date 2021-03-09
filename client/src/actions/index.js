@@ -48,7 +48,7 @@ export const getAmenities = async (id) => {
 
 export const getRates = async (id) => {
     return axios.get(`${ratesAPI}/${id}`).catch(() => false);
-  
+
 }
 
 // aggregate data from all getters into one object

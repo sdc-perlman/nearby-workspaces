@@ -22,6 +22,7 @@ app.get('/api/nearbyworkspaces/address/:workspaceId', getAddress);
 app.get('/workspace-api/workspace/:id', async (req, res) => {
   const { id } = req.params;
   const API = `${process.env.WORKSPACE_API || `http://localhost:4000`}/workspace-api/workspace/${id}`;
+  console.log(API)
   try {
     const { data } = await axios.get(API);
     res.json(data);
@@ -45,9 +46,10 @@ app.get('/api/workspace-description/:id', async (req, res) => {
 
 app.get('/api/photos/:id', async (req, res) => {
   const { id } = req.params;
-  const API = `${process.env.PHOTOS_API || `http://localhost:6001`}/api/photos/${id}`;
+  const API = `http://localhost:6001/api/photos/${id}`;
   try {
     const{ data } = await axios.get(API);
+    console.log('PHOTOS', data);
     res.json(data);
   } catch (error) {
     res.status(404).json();
@@ -56,9 +58,10 @@ app.get('/api/photos/:id', async (req, res) => {
 
 app.get('/amenities-api/amenity/:id', async (req, res) => {
   const { id } = req.params;
-  const API = `${process.env.PHOTOS_API || `http://localhost:4001`}/amenities-api/amenity/${id}`;
+  const API = `${process.env.PHOTOS_API || `http://localhost:4002`}/amenities-api/amenity/${id}`;
   try {
     const{ data } = await axios.get(API);
+    // console.log('Amenities Data', data);
     res.json(data);
   } catch (error) {
     res.status(404).json();

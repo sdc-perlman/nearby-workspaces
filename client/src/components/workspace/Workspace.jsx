@@ -43,6 +43,7 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
 
 
   // insert any available data into workspace-card
+  console.log('PHOTO', photo);
   return (
     <div className="nb-container">
       <a href={`/buildings/${ workspaceId }`} className="light-text">
@@ -79,4 +80,3 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
   );
 }
 
-  
