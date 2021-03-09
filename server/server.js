@@ -49,7 +49,7 @@ app.get('/api/photos/:id', async (req, res) => {
   const API = `http://localhost:6001/api/photos/${id}`;
   try {
     const{ data } = await axios.get(API);
-    console.log('PHOTOS', data);
+    // console.log('PHOTOS', data);
     res.json(data);
   } catch (error) {
     res.status(404).json();

@@ -7,6 +7,7 @@ const batchGeocode = (addressArray) => {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await geocoder.batchGeocode(addressArray);
+      console.log('GEO LOCATER RESPONSE', res);
       let codes = res.map(obj => obj.value[0]);
       codes = codes.filter(code => code);
       resolve(codes);
