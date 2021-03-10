@@ -41,19 +41,8 @@ workspaceRouter.get('/:workspaceId', async (req, res) => {
 })
 
 workspaceRouter.post('/:workspaceId', async (req, res) => {
-  // const { workspaceId } = req.params;
-  // const origin = await WorkspaceLocation.findOne({ workspaceId });
-  console.log('REQ BODY', req.body);
-  // const nearbyWorkspaces = await WorkspaceLocation.find({
-  //   geometry: {
-  //     $near: {
-  //       $geometry: origin.geometry,
-  //       $maxDistance: 5000
-  //     }
-  //   },
-  //   workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
-  // });
-  res.status(200)
+  const origin = await WorkspaceLocation.create( { ...req.body })
+  res.status(200).json({ origin });
 })
 
 workspaceRouter.put('/:workspaceId', async (req, res) => {
