@@ -11,16 +11,6 @@ const checkRecord = (record) => {
   }
 }
 
-//***Need to ask author about this route before deleting***
-// exports.getAddress = asyncHandler( async (req, res, next) => {
-//   const { workspaceId } = req.params;
-//   const workspaceLocation = await WorkspaceLocation.findOne({workspaceId});
-//   checkRecord(workspaceLocation);
-
-//   res.status(200).json(workspaceLocation);
-
-// });
-
 // return a single record based on req.param.workspaceId
 workspaceRouter.get('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
@@ -47,34 +37,15 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
 
 workspaceRouter.put('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
-  const origin = await WorkspaceLocation.findOne({ workspaceId });
-  checkRecord(origin);
-  const nearbyWorkspaces = await WorkspaceLocation.find({
-    geometry: {
-      $near: {
-        $geometry: origin.geometry,
-        $maxDistance: 5000
-      }
-    },
-    workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
-  });
-  res.status(200).json({ origin, nearbyWorkspaces });
+  const origin = await WorkspaceLocation.findOneAndUpdate( { workspaceId }, { ...req.body }, { new: true });
+  res.status(200).json({ origin });
 });
 
 workspaceRouter.delete('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
-  const origin = await WorkspaceLocation.findOne({ workspaceId });
-  checkRecord(origin);
-  const nearbyWorkspaces = await WorkspaceLocation.find({
-    geometry: {
-      $near: {
-        $geometry: origin.geometry,
-        $maxDistance: 5000
-      }
-    },
-    workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
-  });
-  res.status(200).json({ origin, nearbyWorkspaces });
+  const origin = await WorkspaceLocation.findOneAndRemove( { workspaceId });
+  console.log('DELETE BOY', origin);
+  res.status(200);
 });
 
 

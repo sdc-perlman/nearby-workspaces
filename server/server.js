@@ -18,8 +18,6 @@ app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'c
 
 //Main Route
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
-//***Need to ask author about this route before deleting***
-// app.get('/api/nearbyworkspaces/address/:workspaceId', getAddress);
 
 //Service Data Dependencies
 app.get('/workspace-api/workspace/:id', (req, res) => {

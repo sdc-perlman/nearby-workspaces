@@ -3,7 +3,6 @@ const { connection } = require('mongoose');
 
 const app = require('../server.js');
 const WorkspaceLocation = require('../db/models/WorkspaceLocation');
-const sampleData = require('./sampleData');
 const request = supertest(app);
 
 afterAll(async () => {
@@ -33,15 +32,22 @@ describe('CRUD API Endpoints Tests', () => {
   });
 
   it('should Update record given a workspace id param.', async (done) => {
+    const sampleInput = {
+      rawAddress: '10245 Briar Creek Lane, Carmel, IN 46033, USA',
+      workspaceId: 101,
+    }
     const workspaceId = 101;
-    const res = await request.get(`/api/nearbyworkspaces/buildings/${workspaceId}`);
-    expect(res.status).toBe(200);
+    const res = await request.put(`/api/nearbyworkspaces/buildings/${workspaceId}`)
+      .send({ ...sampleInput })
+      .set('Accept', 'application/json')
+      .expect(200);
+    expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }))
     done();
   });
 
   it('should Delete record given a workspace id param.', async (done) => {
-    const workspaceId = 3;
-    const res = await request.get(`/api/nearbyworkspaces/buildings/${workspaceId}`);
+    const workspaceId = 101;
+    const res = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
     expect(res.status).toBe(200);
     done();
   });
