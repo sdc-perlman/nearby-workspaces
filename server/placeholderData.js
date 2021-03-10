@@ -1,5 +1,5 @@
 module.exports = {
-  workplaceData: [
+  workspaceData: [
     {
       _id: '6047a940bf6fe49262b48fe3',
       id: 8,
@@ -11,7 +11,7 @@ module.exports = {
       __v: 0
     }
   ],
-  workplaceDescriptionData: {
+  workspaceDescriptionData: {
     _id: '60413d3e9faa4f2b45e812bd',
     id: 8,
     name: 'Deep',
@@ -59,7 +59,7 @@ module.exports = {
       {
         _id: '6047a94329d2899269023095',
         name: 'Pet care',
-        description: "Snackwave hell of photo booth you probably haven't heard of them ugh",
+        description: 'Snackwave hell of photo booth you probably haven\'t heard of them ugh',
         img: 'pets'
       },
       {

@@ -6,30 +6,30 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 require('./db');
-const { getAddress, getNearbyBuildings, notFound, errorHandler} = require('./controllers');
+const { workspaceRouter, notFound, errorHandler} = require('./controllers');
 const placeholderData = require('./placeholderData');
 
 app.use(morgan('dev'));
 app.use(cors());
-
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
-
 app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'client', 'dist')));
 
-app.get('/api/nearbyworkspaces/buildings/:workspaceId', getNearbyBuildings);
+//Main Route
+app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
+//***Need to ask author about this route before deleting***
+// app.get('/api/nearbyworkspaces/address/:workspaceId', getAddress);
 
-app.get('/api/nearbyworkspaces/address/:workspaceId', getAddress);
-
-app.get('/workspace-api/workspace/:id', async (req, res) => {
-  res.json(placeholderData.workplaceData);
-})
-
-app.get('/api/workspace-description/:id', async (req, res) => {
-  res.json(placeholderData.workplaceDescriptionData);
+//Service Data Dependencies
+app.get('/workspace-api/workspace/:id', (req, res) => {
+  res.json(placeholderData.workspaceData);
 });
 
-app.get('/api/photos/:id', async (req, res) => {
-  //keeping this code around since becky has this service
+app.get('/api/workspace-description/:id', (req, res) => {
+  res.json(placeholderData.workspaceDescriptionData);
+});
+
+app.get('/api/photos/:id', (req, res) => {
+  //***keeping this code around since Becky has this service***
   // const { id } = req.params;
   // const API = `http://localhost:6001/api/photos/${id}`;
   // try {
@@ -41,7 +41,7 @@ app.get('/api/photos/:id', async (req, res) => {
   res.json(placeholderData.photosData);
 });
 
-app.get('/amenities-api/amenity/:id', async (req, res) => {
+app.get('/amenities-api/amenity/:id', (req, res) => {
   res.json(placeholderData.amenitiesData);
 });
 
@@ -49,5 +49,4 @@ app.use('*', notFound);
 
 app.use(errorHandler);
 
-exports.server = app.listen(process.env.PORT || 5001, () => console.log('app works'));
-exports.app = app;
+module.exports = app;
