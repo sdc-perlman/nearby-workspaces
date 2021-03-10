@@ -12,7 +12,7 @@
     "dev-build": "webpack --watch",
     "build": "webpack",
     "seed": "node server/db/data/seeder.js",
-    "test-server": "jest server/spec",
+    "test-server": "jest server/spec --detectOpenHandles",
     "test-unit": "jest client/spec/unit"
   },
   "dependencies": {

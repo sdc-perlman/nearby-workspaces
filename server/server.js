@@ -3,12 +3,14 @@ require('dotenv').config({ path: path.join(__dirname, '../', '.env')});
 const morgan = require('morgan');
 const cors = require('cors');
 const express = require('express');
-const app = express();
 const axios = require('axios');
 require('./db');
 const { workspaceRouter, notFound, errorHandler} = require('./controllers');
 const placeholderData = require('./placeholderData');
 
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
