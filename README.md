@@ -4,9 +4,7 @@
 
 ## Related Projects
 
-  - https://github.com/space-work/review-service
   - https://github.com/space-work/amenities-service
-  - https://github.com/space-work/contact-widget-service
   - https://github.com/space-work/workspace-service
   - https://github.com/space-work/location-service
   - https://github.com/space-work/workspace-description-service
@@ -20,7 +18,7 @@
 
 ## Usage
 
-> 
+>
 
 ## Requirements
 
@@ -31,24 +29,8 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 
 ## Development
-Perform installation instructions below.
-In the root folder rename the file example.env to .env.
 
-To generate test data, ensure you have MongoDB installed and running. From /server/db/data:
-```sh
-node seeder.js -g
-```
-To clear MongoDB collection, from /server/db/data:
-```sh
-node seeder.js -d
-```
 
 ### Installing Dependencies
 
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
-```
 

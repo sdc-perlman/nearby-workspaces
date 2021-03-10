@@ -51,7 +51,7 @@ describe('CRUD API Endpoints Tests', () => {
     const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
     expect(getRes.status).toBe(200);
     expect(delRes.status).toBe(200);
-    expect(getRes.body.origin).toEqual(expect.objectContaining({ ...delRes.body.originInput }));
+    expect(getRes.body.origin).toEqual(expect.objectContaining({ ...delRes.body.origin }));
     done();
   });
 })
