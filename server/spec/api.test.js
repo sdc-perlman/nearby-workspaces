@@ -47,8 +47,11 @@ describe('CRUD API Endpoints Tests', () => {
 
   it('should Delete record given a workspace id param.', async (done) => {
     const workspaceId = 101;
-    const res = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
-    expect(res.status).toBe(200);
+    const getRes = await request.get(`/api/nearbyworkspaces/buildings/${101}`);
+    const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
+    expect(getRes.status).toBe(200);
+    expect(delRes.status).toBe(200);
+    expect(getRes.body.origin).toEqual(expect.objectContaining({ ...delRes.body.originInput }));
     done();
   });
 })

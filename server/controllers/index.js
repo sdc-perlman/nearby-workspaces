@@ -15,7 +15,6 @@ const checkRecord = (record) => {
 workspaceRouter.get('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   const origin = await WorkspaceLocation.findOne({ workspaceId });
-
   checkRecord(origin);
 
   const nearbyWorkspaces = await WorkspaceLocation.find({
@@ -26,8 +25,14 @@ workspaceRouter.get('/:workspaceId', async (req, res) => {
       }
     },
     workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
-  });
-  res.status(200).json({ origin, nearbyWorkspaces });
+  })
+    .then(() => {
+      res.status(200).json({ origin, nearbyWorkspaces });
+    })
+    .catch(() => {
+      console.log('No nearby workspaces generated');
+      res.status(200).json({ origin })
+    })
 })
 
 workspaceRouter.post('/:workspaceId', async (req, res) => {
@@ -38,14 +43,15 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
 workspaceRouter.put('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   const origin = await WorkspaceLocation.findOneAndUpdate( { workspaceId }, { ...req.body }, { new: true });
+  checkRecord(origin);
   res.status(200).json({ origin });
 });
 
 workspaceRouter.delete('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   const origin = await WorkspaceLocation.findOneAndRemove( { workspaceId });
-  console.log('DELETE BOY', origin);
-  res.status(200);
+  checkRecord(origin);
+  res.status(200).json({ origin });
 });
 
 
