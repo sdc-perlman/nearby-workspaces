@@ -1,44 +1,57 @@
-const request = require('request');
+const supertest = require('supertest');
+const { connection } = require('mongoose');
 
-const getBuildings = 'http://localhost:5001/nearbyworkspaces-api/buildings'
-describe('api endpoints', () => {
-  it('returns a workspaces location record by workspaceId property', (done) => {
-    const options = {
-      method: 'GET',
-      uri: `http://localhost:5001/nearbyworkspaces-api/address/1`
-    };
-    request(options, (err, res, body) => {
-      if (err) throw err;
-      const address = JSON.parse(res.body);
-      expect(address.workspaceId).toBe(1);
-      done();
-    })
-  });
+const app = require('../server.js');
+const WorkspaceLocation = require('../db/models/WorkspaceLocation');
+const request = supertest(app);
 
-  it('returns an array of workspaces', (done) => {
-    const options = {
-      method: 'GET',
-      uri: 'http://localhost:5001/nearbyworkspaces-api/buildings/1'
-    };
-    request(options, (err, res) => {
-      if (err) throw err;
-      const locations = JSON.parse(res.body);
-      expect(locations.nearbyWorkspaces.length).toBe(2);
-      done();
-    });
-  });
-
-  it('handles errors', (done) => {
-    const options = {
-      method: 'GET',
-      uri: 'http://localhost:5001/api/not-an-api'
-    };
-    request(options, (err, res) => {
-      if (err) throw err;
-      const error = JSON.parse(res.body);
-      expect(error.message).toBe('Endpoint does not exist');
-      expect(error.status).toBe(404);
-      done();
-    });
-  });
+afterAll(async () => {
+  await connection.close();
 });
+
+describe('CRUD API Endpoints Tests', () => {
+  it('should Create a new record in the database where there is a POST request.', async (done) => {
+    const sampleInput = {
+      rawAddress: '226 Prospect St, South Haven, MI 49090, USA',
+      workspaceId: 101,
+    }
+
+    const res = await request.post('/api/nearbyworkspaces/buildings/3')
+      .send({ ...sampleInput })
+      .set('Accept', 'application/json')
+      .expect(200);
+
+    expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }))
+    done();
+  });
+
+  it('should Read from database given a workspace id param.', async (done) => {
+    const res = await request.get('/api/nearbyworkspaces/buildings/3');
+    expect(res.status).toBe(200);
+    done();
+  });
+
+  it('should Update record given a workspace id param.', async (done) => {
+    const sampleInput = {
+      rawAddress: '10245 Briar Creek Lane, Carmel, IN 46033, USA',
+      workspaceId: 101,
+    }
+    const workspaceId = 101;
+    const res = await request.put(`/api/nearbyworkspaces/buildings/${workspaceId}`)
+      .send({ ...sampleInput })
+      .set('Accept', 'application/json')
+      .expect(200);
+    expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }))
+    done();
+  });
+
+  it('should Delete record given a workspace id param.', async (done) => {
+    const workspaceId = 101;
+    const getRes = await request.get(`/api/nearbyworkspaces/buildings/${101}`);
+    const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
+    expect(getRes.status).toBe(200);
+    expect(delRes.status).toBe(200);
+    expect(getRes.body.origin).toEqual(expect.objectContaining({ ...delRes.body.origin }));
+    done();
+  });
+})

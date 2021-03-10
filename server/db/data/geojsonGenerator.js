@@ -7,6 +7,7 @@ const batchGeocode = (addressArray) => {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await geocoder.batchGeocode(addressArray);
+      console.log('GEO LOCATER RESPONSE', res);
       let codes = res.map(obj => obj.value[0]);
       codes = codes.filter(code => code);
       resolve(codes);
@@ -41,6 +42,7 @@ const getAndWriteGeoCodes = async (arrayOfAddresses, fileNumber = 1) => {
 
 // check command line args and geocode appropriate chunk of addresses
 const seed = async () => {
+  console.log(process.argv);
   try {
     if (process.argv[2] === '-g') {
       let num = process.argv[3];

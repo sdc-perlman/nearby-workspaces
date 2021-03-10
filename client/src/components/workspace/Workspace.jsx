@@ -79,4 +79,3 @@ export default ({ location: { workspaceId, neighborhood }, details = null } ) =>
   );
 }
 
-  
