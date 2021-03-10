@@ -23,7 +23,7 @@ const getDescriptions = async () => {
 
 // map addresses into shape of WorkspaceLocation schema
 const prepLocations = addresses.map((geojson) => {
-  const { 
+  const {
     streetName, streetNumber, city, formattedAddress, countryCode,
     extra: { neighborhood }, latitude, longitude, country, zipcode,
     administrativeLevels: { level1short }
@@ -32,7 +32,7 @@ const prepLocations = addresses.map((geojson) => {
     rawAddress: formattedAddress,
     formattedAddress,
     neighborhood,
-    streetName, 
+    streetName,
     streetNumber,
     city,
     state: level1short,

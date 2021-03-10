@@ -3,71 +3,50 @@ require('dotenv').config({ path: path.join(__dirname, '../', '.env')});
 const morgan = require('morgan');
 const cors = require('cors');
 const express = require('express');
-const app = express();
 const axios = require('axios');
 require('./db');
-const { getAddress, getNearbyBuildings, notFound, errorHandler} = require('./controllers');
+const { workspaceRouter, notFound, errorHandler} = require('./controllers');
+const placeholderData = require('./placeholderData');
 
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
-
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
-
 app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'client', 'dist')));
 
-app.get('/api/nearbyworkspaces/buildings/:workspaceId', getNearbyBuildings);
+//Main Route
+app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
 
-app.get('/api/nearbyworkspaces/address/:workspaceId', getAddress);
-
-app.get('/workspace-api/workspace/:id', async (req, res) => {
-  const { id } = req.params;
-  const API = `${process.env.WORKSPACE_API || `http://localhost:4000`}/workspace-api/workspace/${id}`;
-  try {
-    const { data } = await axios.get(API);
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.json(err);
-  }
-
-})
-
-app.get('/api/workspace-description/:id', async (req, res) => {
-  const { id } = req.params;
-  const API = `${process.env.DESCRIPTION_API || `http://localhost:6060`}/api/workspace-description/${id}`;
-  try {
-    const{ data } = await axios.get(API);
-    res.json(data);
-  } catch (error) {
-    res.status(404).json();
-  }
+//Service Data Dependencies
+app.get('/workspace-api/workspace/:id', (req, res) => {
+  res.json(placeholderData.workspaceData);
 });
 
-app.get('/api/photos/:id', async (req, res) => {
-  const { id } = req.params;
-  const API = `${process.env.PHOTOS_API || `http://localhost:6001`}/api/photos/${id}`;
-  try {
-    const{ data } = await axios.get(API);
-    res.json(data);
-  } catch (error) {
-    res.status(404).json();
-  }
+app.get('/api/workspace-description/:id', (req, res) => {
+  res.json(placeholderData.workspaceDescriptionData);
 });
 
-app.get('/amenities-api/amenity/:id', async (req, res) => {
-  const { id } = req.params;
-  const API = `${process.env.PHOTOS_API || `http://localhost:4001`}/amenities-api/amenity/${id}`;
-  try {
-    const{ data } = await axios.get(API);
-    res.json(data);
-  } catch (error) {
-    res.status(404).json();
-  }
+app.get('/api/photos/:id', (req, res) => {
+  //***keeping this code around since Becky has this service***
+  // const { id } = req.params;
+  // const API = `http://localhost:6001/api/photos/${id}`;
+  // try {
+  //   const{ data } = await axios.get(API);
+  //     res.json(data);
+  // } catch (error) {
+  //   res.status(404).json();
+  // }
+  res.json(placeholderData.photosData);
+});
+
+app.get('/amenities-api/amenity/:id', (req, res) => {
+  res.json(placeholderData.amenitiesData);
 });
 
 app.use('*', notFound);
 
 app.use(errorHandler);
 
-exports.server = app.listen(process.env.PORT || 5001, () => console.log('app works'));
-exports.app = app;
+module.exports = app;

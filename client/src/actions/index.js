@@ -22,6 +22,7 @@ export const getWorkspaces = () => {
 
     try {
       const { data } = await axios.get(`${nearbyAPI}/buildings/${id}`);
+      console.log(data);
       if (data.success === false) {
         resolve(false);
       }
@@ -48,7 +49,7 @@ export const getAmenities = async (id) => {
 
 export const getRates = async (id) => {
     return axios.get(`${ratesAPI}/${id}`).catch(() => false);
-  
+
 }
 
 // aggregate data from all getters into one object
