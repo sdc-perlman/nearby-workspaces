@@ -18,3 +18,5 @@ sequelize.authenticate()
   .catch((err) => {
     console.log(err, 'SQL FAILED TO CONNECT');
   });
+
+module.exports = sequelize;
