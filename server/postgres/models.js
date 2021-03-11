@@ -1,19 +1,36 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
+const faker = require('faker');
 const sequelize = require('./');
 
-const User = sequelize.define('User', {
-  // Model attributes are defined here
-  firstName: {
-    type: DataTypes.STRING,
+const point = { type: 'Point', coordinates: [faker.address.longitude(), faker.address.latitude()]};
+
+const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
+  workspace: {
+    type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true,
     allowNull: false
   },
-  lastName: {
-    type: DataTypes.STRING
-    // allowNull defaults to true
-  }
-}, {
-  // Other model options go here
-});
+  workspaceSlug: {
+    type: DataTypes.STRING,
+  },
+  workspaceId: {
+    type: DataTypes.INTEGER,
+  },
+  rawAddress: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  geometry: point,
+},
+{ freezeTableName: true });
 
-// `sequelize.define` also returns the model
-console.log(User === sequelize.models.User); // true
+sequelize.sync({ force: true })
+  .then(() => {
+    console.log('MODELS SYNCED');
+  })
+  .catch((err) => {
+    console.log(err, 'MODELS NOT SYNCED');
+  });
+
+module.exports = WorkspaceLocation;
