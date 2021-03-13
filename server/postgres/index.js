@@ -13,10 +13,10 @@ const sequelize = new Sequelize(database, user, password, {
 
 sequelize.authenticate()
   .then(() => {
-    console.log('SQL CONNECTED');
+    console.log('POSTGRES CONNECTED');
   })
   .catch((err) => {
-    console.log(err, 'SQL FAILED TO CONNECT');
+    console.log(err, 'POSTGRES FAILED TO CONNECT');
   });
 
 module.exports = sequelize;

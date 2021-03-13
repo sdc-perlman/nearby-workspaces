@@ -1,36 +1,70 @@
 const { DataTypes, Sequelize } = require('sequelize');
-const faker = require('faker');
 const sequelize = require('./');
 
-const point = { type: 'Point', coordinates: [faker.address.longitude(), faker.address.latitude()]};
-
 const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
-  workspace: {
+  uuid: {
     type: DataTypes.UUID,
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    unique: true,
   },
   workspaceSlug: {
     type: DataTypes.STRING,
   },
   workspaceId: {
     type: DataTypes.INTEGER,
+    unique: true,
   },
   rawAddress: {
     type: DataTypes.STRING,
     defaultValue: 'Not listed',
   },
-  geometry: point,
-},
-{ freezeTableName: true });
+}, {
+  sequelize,
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['workspaceId'],
+    }
+  ],
+});
 
-sequelize.sync({ force: true })
-  .then(() => {
-    console.log('MODELS SYNCED');
-  })
-  .catch((err) => {
-    console.log(err, 'MODELS NOT SYNCED');
-  });
 
-module.exports = WorkspaceLocation;
+const LocationPointer = sequelize.define('LocationPointer', {
+  uuid: {
+    type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true,
+    allowNull: false
+  },
+  workspaceId: {
+    type: DataTypes.INTEGER,
+    unique: true,
+  },
+  geo: DataTypes.GEOMETRY('POINT'),
+  workspaceLocation_id: {
+    type: DataTypes.UUID,
+    references: {
+      model: 'WorkspaceLocations',
+      key: 'uuid',
+    },
+    allowNull: false,
+  }
+}, {
+  sequelize,
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['workspaceId'],
+    }
+  ],
+});
+
+
+module.exports = {
+  WorkspaceLocation,
+  LocationPointer,
+};
