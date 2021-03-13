@@ -20,6 +20,42 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
     type: DataTypes.STRING,
     defaultValue: 'Not listed',
   },
+  formattedAddress: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  streetName: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  streetNumber: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  neighborhood: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  city: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  state: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  country: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  countryCode: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  zipCode: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
 }, {
   sequelize,
   timestamps: false,
@@ -44,6 +80,7 @@ const LocationPointer = sequelize.define('LocationPointer', {
     unique: true,
   },
   geo: DataTypes.GEOMETRY('POINT'),
+  // eslint-disable-next-line camelcase
   workspaceLocation_id: {
     type: DataTypes.UUID,
     references: {
@@ -51,7 +88,7 @@ const LocationPointer = sequelize.define('LocationPointer', {
       key: 'uuid',
     },
     allowNull: false,
-  }
+  },
 }, {
   sequelize,
   timestamps: false,
