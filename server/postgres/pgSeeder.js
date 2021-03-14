@@ -5,7 +5,7 @@ require('./relationship');
 
 
 const saveSeed = async (data, transaction) => {
-  const {uuid} = await WorkspaceLocation.create({ ...data }, { transaction });
+  const { uuid } = await WorkspaceLocation.create({ ...data }, { transaction });
   await LocationPointer.create({
     geo: {
       type: 'Point',
@@ -17,7 +17,7 @@ const saveSeed = async (data, transaction) => {
     workspaceId: data.workspaceId,
     workspaceLocation_id: uuid,
   }, { transaction });
-  if (data.workspaceId === 1000000) {
+  if (data.workspaceId === 2) {
     await transaction.commit();
     console.log('seeded');
     process.exit();
@@ -31,7 +31,7 @@ sequelize.sync({ force: true })
         try {
           const transaction = await sequelize.transaction({autocommit: false});
           let seeder = 1;
-          for(let i = 0; i < 1000000; i++) {
+          for(let i = 0; i < 2; i++) {
           const streetNumber = faker.random.number(1000);
           const streetName = faker.address.streetName();
           const city = faker.address.city();

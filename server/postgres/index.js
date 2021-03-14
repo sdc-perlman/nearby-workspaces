@@ -8,7 +8,6 @@ const password = '';
 const sequelize = new Sequelize(database, user, password, {
   host,
   dialect: 'postgres',
-  logging: false
 });
 
 sequelize.authenticate()
