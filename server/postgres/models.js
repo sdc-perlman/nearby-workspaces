@@ -79,7 +79,8 @@ const LocationPointer = sequelize.define('LocationPointer', {
     type: DataTypes.INTEGER,
     unique: true,
   },
-  geo: DataTypes.GEOMETRY('POINT'),
+  longitude: DataTypes.DECIMAL,
+  latitude: DataTypes.DECIMAL,
   // eslint-disable-next-line camelcase
   workspaceLocation_id: {
     type: DataTypes.UUID,

@@ -1,0 +1,3 @@
+COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode") FROM '/Users/munzmoses/RPT25/nearby-workspaces/server/postgres/workspaceLocations.sql' WITH DELIMITER AS '|';
+
+COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude","workspaceLocation_id") FROM '/Users/munzmoses/RPT25/nearby-workspaces/server/postgres/locationPointers.sql' WITH DELIMITER AS '|';

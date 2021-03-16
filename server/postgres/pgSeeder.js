@@ -7,13 +7,8 @@ require('./relationship');
 const saveSeed = async (data, transaction) => {
   const { uuid } = await WorkspaceLocation.create({ ...data }, { transaction });
   await LocationPointer.create({
-    geo: {
-      type: 'Point',
-      coordinates: [
-        Math.abs(faker.address.longitude()),
-        faker.address.latitude(),
-      ],
-    },
+    longitude: Math.abs(faker.address.longitude()),
+    latitude: faker.address.latitude(),
     workspaceId: data.workspaceId,
     workspaceLocation_id: uuid,
   }, { transaction });
