@@ -4,7 +4,7 @@ const sequelize = require('./');
 const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   uuid: {
     type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
+    // defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
     allowNull: false,
     unique: true,
@@ -57,7 +57,6 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
     defaultValue: 'Not listed',
   },
 }, {
-  sequelize,
   timestamps: false,
   indexes: [
     {
@@ -71,7 +70,7 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
 const LocationPointer = sequelize.define('LocationPointer', {
   uuid: {
     type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
+    // defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
     allowNull: false
   },
@@ -91,7 +90,6 @@ const LocationPointer = sequelize.define('LocationPointer', {
     allowNull: false,
   },
 }, {
-  sequelize,
   timestamps: false,
   indexes: [
     {
