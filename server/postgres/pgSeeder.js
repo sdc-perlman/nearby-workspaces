@@ -19,7 +19,6 @@ sequelize.sync({ force: true })
       fs.writeFile(`./dataFiles/locationPointers${currentFileIndex}.sql`, locationPointers);
       for(let i = 1; i <= lines; i++) {
         if(currentFileIndex > previousFileIndex) {
-          console.log(currentFileIndex, previousFileIndex);
           fs.writeFile(`./dataFiles/workspaceLocations${currentFileIndex}.sql`, workspaceLocations);
           fs.writeFile(`./dataFiles/locationPointers${currentFileIndex}.sql`, locationPointers);
           previousFileIndex = currentFileIndex;
