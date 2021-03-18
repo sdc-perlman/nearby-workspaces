@@ -16,8 +16,8 @@ const generatePgData = (id) => {
   workspaceLocationsData += `${workspaceLocationsUuid}|${faker.lorem.slug()}|${id}|${rawAddress}|${rawAddress}|${streetName}|${streetNumber}|${neighborhood}|${city}|${state}|United States|US|${zipCode}\n`
   locationPointersData += `${uuid()}|${id}|${faker.address.longitude(-117, -82)}|${faker.address.latitude(33, 41)}|${workspaceLocationsUuid}\n`;
 
-  const rawQuery1 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode") FROM '${path.join(__dirname, 'workspaceLocations.sql')}' WITH DELIMITER AS '|';`;
-  const rawQuery2 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude","workspaceLocation_id") FROM '${path.join(__dirname, 'locationPointers.sql')}' WITH DELIMITER AS '|';`;
+  const rawQuery1 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode") FROM '${path.join(__dirname, 'workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
+  const rawQuery2 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude","workspaceLocation_id") FROM '${path.join(__dirname, 'locationPointers.csv')}' WITH DELIMITER AS '|';`;
 
   return {
     workspaceLocationsData,
