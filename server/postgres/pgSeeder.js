@@ -5,8 +5,8 @@ const fs = require('fs').promises;
 const argv = require('yargs').argv;
 
 const lines = argv.lines || 1000000;
-const workspaceLocationsPath = './workspaceLocations.sql';
-const locationPointersPath = './locationPointers.sql'
+const workspaceLocationsPath = './workspaceLocations.csv';
+const locationPointersPath = './locationPointers.csv'
 const batchSize = 100000;
 
 sequelize.sync({ force: true })
