@@ -60,7 +60,6 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   timestamps: false,
   indexes: [
     {
-      unique: true,
       fields: ['workspaceId'],
     }
   ],
