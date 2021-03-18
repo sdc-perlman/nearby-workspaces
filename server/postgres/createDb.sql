@@ -1,2 +1,2 @@
-DROP DATABASE workspacelocations;
+DROP DATABASE IF EXISTS workspacelocations;
 CREATE DATABASE workspacelocations;
