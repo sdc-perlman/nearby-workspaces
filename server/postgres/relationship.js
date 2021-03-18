@@ -1,11 +1,9 @@
 const { WorkspaceLocation, LocationPointer } = require('./models');
 
-WorkspaceLocation.hasOne(LocationPointer, {
-  foreignKey: 'workspaceLocation_id',
-  // constraints: false,
+LocationPointer.hasOne(WorkspaceLocation, {
+  foreignKey: 'locationPointerUuid',
 });
 
-LocationPointer.belongsTo(WorkspaceLocation, {
-  foreignKey: 'workspaceLocation_id',
-  // constraints: false,
+WorkspaceLocation.belongsTo(LocationPointer, {
+  foreignKey: 'locationPointerUuid',
 });
