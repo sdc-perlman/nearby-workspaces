@@ -12,8 +12,6 @@ LINES=${1:-10000000}
 
 psql -d postgres -f createDb.sql
 
-node models.js
-
 # seed database
 node pgSeeder.js --lines=$LINES
 

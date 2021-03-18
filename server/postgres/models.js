@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize');
 const sequelize = require('./');
+const { DataTypes, Model } = require('sequelize');
 
 //WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
 
@@ -17,6 +17,7 @@ LocationPointer.init({
   longitude: DataTypes.DECIMAL,
   latitude: DataTypes.DECIMAL,
 }, {
+  sequelize,
   timestamps: false,
 });
 
@@ -82,6 +83,7 @@ WorkspaceLocation.init({
     allowNull: false,
   },
 }, {
+  sequelize,
   timestamps: false,
 });
 
