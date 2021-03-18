@@ -1,16 +1,12 @@
 const createDB = require('./');
 const generateCouchData = require('./generateCouchData');
-const argv = require('yargs').argv;
-const lines = argv.lines || 100;
 const batchSize = 1000;
-
-let workspaceId = 1;
 
 (async () => {
   const workspaces = await createDB();
   let docs = [];
   let batch = 0;
-  for(let i = 1; i <= 1000000; i++) {
+  for(let i = 1; i <= 10000000; i++) {
     const dataFormat = generateCouchData(i);
     docs.push(dataFormat);
     batch++;
