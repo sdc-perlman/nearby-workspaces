@@ -9,19 +9,21 @@ ALTER TABLE ONLY public."WorkspaceLocations"
 
 ALTER TABLE ONLY public."WorkspaceLocations"
     ADD CONSTRAINT LocationPointers_fkey
-    FOREIGN KEY ("locationPointer_id")
+    FOREIGN KEY ("locationPointerUuid")
     REFERENCES public."LocationPointers" (uuid)
     ON DELETE CASCADE;
 `;
 
-const indexQuery = `
+const indexQuery1 = `
 CREATE INDEX CONCURRENTLY workspaceLocationIndex
     ON public."WorkspaceLocations"
-    USING HASH (workspaceId);
+    USING HASH ("workspaceId");
+`;
 
+const indexQuery2 = `
 CREATE INDEX CONCURRENTLY locationPointerIndex
     ON public."LocationPointers"
-    USING HASH (workspaceId);
+    USING HASH ("workspaceId");
 `;
 
 
@@ -30,7 +32,8 @@ CREATE INDEX CONCURRENTLY locationPointerIndex
 (async() => {
   try {
     await sequelize.query(keyQuery);
-    await sequelize.query(indexQuery);
+    await sequelize.query(indexQuery1);
+    await sequelize.query(indexQuery2);
     process.exit();
   } catch (err) {
     console.log(err);
