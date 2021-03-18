@@ -1,13 +1,13 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('./');
 
 //WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
 
-class LocationPointer extends Model {}
-
-LocationPointer.init({
+const LocationPointer = sequelize.define('LocationPointer', {
   uuid: {
     type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true,
     allowNull: false
   },
   workspaceId: {
@@ -18,16 +18,19 @@ LocationPointer.init({
   latitude: DataTypes.DECIMAL,
 }, {
   timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['workspaceId'],
+    }
+  ],
 });
 
-//remove sequelize auto generated primary key for a faster seed
-LocationPointer.removeAttribute('id');
-
-class WorkspaceLocation extends Model {}
-
-WorkspaceLocation.init({
+const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   uuid: {
     type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true,
     allowNull: false,
   },
   workspaceSlug: {
@@ -79,13 +82,21 @@ WorkspaceLocation.init({
   },
   locationPointerUuid: {
     type: DataTypes.UUID,
+    references: {
+      model: 'WorkspaceLocations',
+      key: 'uuid',
+    },
     allowNull: false,
   },
 }, {
   timestamps: false,
+  indexes: [
+    {
+      fields: ['workspaceId'],
+    }
+  ],
 });
 
-WorkspaceLocation.removeAttribute('id');
 
 
 module.exports = {

@@ -1,10 +1,10 @@
 const sequelize = require('./');
-require('./relationship');
+require('./models');
 const generatePgData = require('./generatePgData');
 const fs = require('fs').promises;
 const argv = require('yargs').argv;
 
-const lines = argv.lines || 1000000;
+const lines = argv.lines || 100000;
 const workspaceLocationsFile = './dataFiles/workspaceLocations.csv';
 const locationPointersFile = './dataFiles/locationPointers.csv'
 const batchSize = 100000;
