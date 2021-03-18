@@ -1,5 +1,4 @@
 const { Sequelize } = require('sequelize');
-require('./models');
 
 const user = 'munzmoses';
 const host = 'localhost';
@@ -9,7 +8,7 @@ const password = '';
 const sequelize = new Sequelize(database, user, password, {
   host,
   dialect: 'postgres',
-  // logging: false,
+  logging: false,
 });
 
 sequelize.authenticate()
