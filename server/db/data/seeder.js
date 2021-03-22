@@ -1,8 +1,9 @@
-require('../');
+require('..');
 const axios = require('axios');
-const path = require('path')
+const path = require('path');
 const fs = require('fs');
 const WorkspaceLocation = require('../models/WorkspaceLocation');
+
 const descriptionService = `${process.env.DESCRIPTION_API || 'http://localhost:6060'}/api/workspace-descriptions`;
 
 //read geojson files and parse into arrays
