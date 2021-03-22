@@ -1,14 +1,14 @@
 const { DataTypes, Sequelize } = require('sequelize');
-const sequelize = require('./');
+const sequelize = require('.');
 
-//WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
+// WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
 
 const LocationPointer = sequelize.define('LocationPointer', {
   uuid: {
     type: DataTypes.UUID,
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
   },
   workspaceId: {
     type: DataTypes.INTEGER,
@@ -22,7 +22,7 @@ const LocationPointer = sequelize.define('LocationPointer', {
     {
       unique: true,
       fields: ['workspaceId'],
-    }
+    },
   ],
 });
 
@@ -83,7 +83,7 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   locationPointerUuid: {
     type: DataTypes.UUID,
     references: {
-      model: 'WorkspaceLocations',
+      model: 'LocationPointer',
       key: 'uuid',
     },
     allowNull: false,
@@ -93,11 +93,9 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   indexes: [
     {
       fields: ['workspaceId'],
-    }
+    },
   ],
 });
-
-
 
 module.exports = {
   WorkspaceLocation,

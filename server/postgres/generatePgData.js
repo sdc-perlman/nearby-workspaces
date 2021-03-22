@@ -18,15 +18,9 @@ const generatePgData = (id) => {
 
   workspaceLocationsData += `${uuid()}|${faker.lorem.slug()}|${id}|${rawAddress}|${rawAddress}|${streetName}|${streetNumber}|${neighborhood}|${city}|${state}|United States|US|${zipCode}|${locationPointerUuid}\n`;
 
-  const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
-
-  const rawQuery2 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode","locationPointerUuid") FROM '${path.join(__dirname, './dataFiles/workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
-
   return {
     workspaceLocationsData,
     locationPointersData,
-    rawQuery1,
-    rawQuery2
   };
 };
 

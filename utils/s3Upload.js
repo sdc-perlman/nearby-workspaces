@@ -8,7 +8,7 @@ const css = fs.readFileSync(path.join(__dirname, '../', 'client', 'dist', 'reset
 
 AWS.config.getCredentials((err) => {
   if (err) console.log('$$$', err);
-  else console.log("Access key:", AWS.config.credentials.accessKeyId);
+  else console.log('Access key:', AWS.config.credentials.accessKeyId);
 });
 
 const uploadBundle = async () => {
@@ -19,9 +19,9 @@ const uploadBundle = async () => {
   const s3 = new AWS.S3({apiVersion: '2006-03-01'});
   try {
     await s3.putObject(jsObject).promise();
-    console.log("Successfully uploaded bundle to " + process.env.AWS_S3_BUCKET + "/" + jsName);
+    console.log('Successfully uploaded bundle to ' + process.env.AWS_S3_BUCKET + "/" + jsName);
     await s3.putObject(cssObject).promise();
-    console.log("Successfully uploaded bundle to " + process.env.AWS_S3_BUCKET + "/" + cssName);
+    console.log('Successfully uploaded bundle to ' + process.env.AWS_S3_BUCKET + "/" + cssName);
   } catch (err) {
     console.log(err)
   }
