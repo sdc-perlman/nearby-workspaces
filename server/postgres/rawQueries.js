@@ -14,29 +14,16 @@ ALTER TABLE ONLY public."WorkspaceLocations"
     ON DELETE CASCADE;
 `;
 
-const indexQuery1 = `
-CREATE INDEX CONCURRENTLY workspaceLocationIndex
-    ON public."WorkspaceLocations"
-    USING HASH ("workspaceId");
-`;
-
-const indexQuery2 = `
-CREATE INDEX CONCURRENTLY locationPointerIndex
+const indexQuery = `
+CREATE INDEX geogIndex
     ON public."LocationPointers"
-    USING HASH ("workspaceId");
+    USING GIST (geog);
 `;
-
-// const indexQuery3 = `
-// CREATE INDEX geogIndex
-//     ON public."LocationPointers"
-//     USING GIST (geog);
-// `;
 
 (async () => {
   try {
     await sequelize.query(keyQuery);
-    await sequelize.query(indexQuery1);
-    await sequelize.query(indexQuery2);
+    await sequelize.query(indexQuery);
     process.exit();
   } catch (err) {
     console.log(err);

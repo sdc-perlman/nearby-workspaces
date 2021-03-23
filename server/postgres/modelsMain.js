@@ -21,8 +21,9 @@ const LocationPointer = sequelize.define('LocationPointer', {
   timestamps: false,
   indexes: [
     {
-      unique: true,
+      name: 'locationPointerIndex',
       fields: ['workspaceId'],
+      using: 'HASH',
     },
   ],
 });
@@ -93,7 +94,9 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   timestamps: false,
   indexes: [
     {
+      name: 'workspaceLocationIndex',
       fields: ['workspaceId'],
+      using: 'HASH',
     },
   ],
 });
