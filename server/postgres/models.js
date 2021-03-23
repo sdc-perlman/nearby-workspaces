@@ -12,8 +12,9 @@ LocationPointer.init({
     type: DataTypes.INTEGER,
     unique: true,
   },
-  longitude: DataTypes.DECIMAL,
-  latitude: DataTypes.DECIMAL,
+  geog: {
+    type: DataTypes.GEOGRAPHY('POINT'),
+  },
 }, {
   sequelize,
   timestamps: false,

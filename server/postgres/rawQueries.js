@@ -26,6 +26,12 @@ CREATE INDEX CONCURRENTLY locationPointerIndex
     USING HASH ("workspaceId");
 `;
 
+// const indexQuery3 = `
+// CREATE INDEX geogIndex
+//     ON public."LocationPointers"
+//     USING GIST (geog);
+// `;
+
 (async () => {
   try {
     await sequelize.query(keyQuery);

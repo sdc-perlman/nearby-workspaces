@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const path = require('path');
 const argv = require('yargs').argv;
 const sequelize = require('.');
 require('./models');
@@ -13,7 +14,11 @@ sequelize.sync({ force: true })
   .then(() => {
     console.log('MODELS CONNECTED');
     (async () => {
-      await fs.mkdir('dataFiles');
+      await fs.mkdir('dataFiles')
+        .catch((err) => {
+          console.log('Please remove dataFiles directory before continuing. Use: \n"node removeDataFiles.js"');
+          process.exit();
+        });
       let workspaceLocations = '';
       let locationPointers = '';
       let batch = 0;
@@ -26,7 +31,7 @@ sequelize.sync({ force: true })
           try {
             await fs.writeFile(workspaceLocationsFile, workspaceLocations);
             await fs.writeFile(locationPointersFile, locationPointers);
-            const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
+            const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","geog") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
             const rawQuery2 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode","locationPointerUuid") FROM '${path.join(__dirname, './dataFiles/workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
             await sequelize.query(rawQuery1);
             await sequelize.query(rawQuery2);
