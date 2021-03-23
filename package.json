@@ -11,7 +11,7 @@
     "dev": "nodemon server/initServer.js",
     "dev-build": "webpack --watch",
     "build": "webpack",
-    "seed": "node server/db/data/seeder.js",
+    "seed": "cd server/postgres && bash seed.sh",
     "test-server": "jest server/spec --detectOpenHandles",
     "test-unit": "jest client/spec/unit"
   },
