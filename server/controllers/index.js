@@ -1,23 +1,29 @@
 const workspaceRouter = require('express').Router();
+const { Sequelize } = require('sequelize');
 const sequelize = require('../postgres/index');
 
 // const WorkspaceLocation = require('../db/models/WorkspaceLocation');
+const dataStructuring = require('./dataStructuring');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
+
+const Op = Sequelize.Op;
 
 workspaceRouter.get('/:workspaceId', async (req, res) => {
   try {
     const { workspaceId } = req.params;
     const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
     WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
-    // const nearbyWorkspaces = await LocationPointer.findAll({
-    //   order: [
-    //     ['geog', `SRID=4326;POINT(${long} ${lat})`],
-    //   ],
-    //   limit: 5,
-    // });
-    const [stuff] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 5 OFFSET 5000;`);
-    console.log(stuff);
+    const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4 OFFSET 5000;`);
+    const nearbyWorkspaces = await WorkspaceLocation.findAll({
+      where: {
+        workspaceId: {
+          [Op.in]: [...locationPointers.map((x) => x.workspaceId)],
+        },
+      },
+    });
+    const finalData = dataStructuring(origin, locationPointers, nearbyWorkspaces);
+    // console.log(finalData);
     // res.status(200).json({ origin, nearbyWorkspaces });
     res.status(200).send();
   } catch (err) {
