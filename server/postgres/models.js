@@ -1,6 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('.');
-
+// Models for Seeding
 class LocationPointer extends Model {}
 
 LocationPointer.init({

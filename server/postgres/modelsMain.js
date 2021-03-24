@@ -25,6 +25,11 @@ const LocationPointer = sequelize.define('LocationPointer', {
       fields: ['workspaceId'],
       using: 'HASH',
     },
+    {
+      name: 'geogIndex',
+      fields: ['geog'],
+      using: 'GIST',
+    },
   ],
 });
 

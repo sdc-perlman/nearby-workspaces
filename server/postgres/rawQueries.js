@@ -14,16 +14,16 @@ ALTER TABLE ONLY public."WorkspaceLocations"
     ON DELETE CASCADE;
 `;
 
-const indexQuery = `
-CREATE INDEX geogIndex
-    ON public."LocationPointers"
-    USING GIST (geog);
-`;
+// const indexQuery = `
+// CREATE INDEX "geogIndex"
+//     ON public."LocationPointers"
+//     USING GIST (geog);
+// `;
 
 (async () => {
   try {
     await sequelize.query(keyQuery);
-    await sequelize.query(indexQuery);
+    console.log('KEYS GENERATED');
     process.exit();
   } catch (err) {
     console.log(err);
