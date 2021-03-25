@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import LoadingWorkspace from './LoadingWorkspace';
 import { getWorkspaceInfo } from '../../actions';
 
-export default ({ location: { workspaceId, neighborhood }, details = null }) => {
+export default ({ location: { workspaceId, neighborhood }, allIds, details = null }) => {
   const [space, setSpace] = useState(details);
   // use passed in id to get details for given workspace
   if (space === null) {
-    getWorkspaceInfo(workspaceId)
+    getWorkspaceInfo(workspaceId, allIds)
       .then((res) => {
         setSpace(res);
       })

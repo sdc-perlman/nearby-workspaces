@@ -38,8 +38,8 @@ export const getDescription = async (id) => {
   return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
 };
 
-export const getPhoto = (id) => {
-  return axios.get(`${photoAPI}/${id}`).catch(() => false);
+export const getPhoto = (id, allIds) => {
+  return axios.get(`${photoAPI}/${id}?ids=${allIds.join(',')}`).catch(() => false);
 };
 
 export const getAmenities = async (id) => {
@@ -51,14 +51,15 @@ export const getRates = async (id) => {
 };
 
 // aggregate data from all getters into one object
-export const getWorkspaceInfo = (id) => {
+export const getWorkspaceInfo = (id, allIds) => {
+  console.log(allIds);
   return new Promise(async (resolve, reject) => {
     try {
       const info = {};
-      const description = await getDescription(id);
+      const description = await getDescription(id, allIds);
       info.description = description ? description.data : {};
 
-      const photo = await getPhoto(id);
+      const photo = await getPhoto(id, allIds);
       info.photo = photo ? photo.data : {};
 
       const amenities = await getAmenities(id);

@@ -22,12 +22,13 @@ export default ({ locations = null, details = null }) => {
     <>
       <Title />
       {locs
-        .slice(0, 6)
+        .slice(0, 1)
         .filter((loc) => loc.workspaceId < 100)
         .map((location) => (
           <Workspace
             key={location.workspaceId}
             location={location}
+            allIds={locs.map((x) => x.workspaceId)}
             details={details}
           />
         ))}
