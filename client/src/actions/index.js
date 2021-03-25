@@ -1,5 +1,5 @@
-import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 import axios from 'axios';
+// import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 axios.defaults.timeout = 3000;
 const nearbyAPI = '/api/nearbyworkspaces';
 const amenitiesAPI = '/amenities-api/amenity';
@@ -10,19 +10,18 @@ const photoAPI = '/api/photos';
 // get list of workspaces near given id
 export const getWorkspaces = () => {
   return new Promise(async (resolve, reject) => {
-    let splitUrl = window.location.pathname.split('/').filter(el => el);
-    let rawId =  splitUrl[splitUrl.length - 1];
+    const splitUrl = window.location.pathname.split('/').filter((el) => el);
+    const rawId = splitUrl[splitUrl.length - 1];
 
     const id = parseInt(rawId);
 
-    if (isNaN(id)) {
+    if (Number.isNaN(id)) {
       resolve(false);
       return;
     }
 
     try {
       const { data } = await axios.get(`${nearbyAPI}/buildings/${id}`);
-      console.log(data);
       if (data.success === false) {
         resolve(false);
       }
@@ -31,12 +30,12 @@ export const getWorkspaces = () => {
       reject(error);
     }
   })
-  .catch(error => false);
+    .catch(() => false);
 };
 
 // getters for different services
 export const getDescription = async (id) => {
-    return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
+  return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
 };
 
 export const getPhoto = (id) => {
@@ -48,13 +47,12 @@ export const getAmenities = async (id) => {
 };
 
 export const getRates = async (id) => {
-    return axios.get(`${ratesAPI}/${id}`).catch(() => false);
-
-}
+  return axios.get(`${ratesAPI}/${id}`).catch(() => false);
+};
 
 // aggregate data from all getters into one object
 export const getWorkspaceInfo = (id) => {
-  return new Promise( async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const info = {};
       const description = await getDescription(id);
@@ -74,6 +72,5 @@ export const getWorkspaceInfo = (id) => {
       reject(error);
     }
   })
-    .catch(err => false);
+    .catch(() => false);
 };
-
