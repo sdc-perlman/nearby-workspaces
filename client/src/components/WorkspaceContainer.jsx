@@ -1,35 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Workspace from './workspace/Workspace';
 import Title from './Title';
 import { getWorkspaces } from '../actions';
 
-export default ({ locations = null, details = null }) => {
-  const [locs, setLocs] = useState(locations);
-  if (locs === null) {
+export default () => {
+  const [locs, setLocs] = useState(null);
+  const [allIds, setAllIds] = useState([]);
+  const [allInfo, setAllInfo] = useState([]);
+  const [pic, setPic] = useState([]);
+
+  useEffect(() => {
     getWorkspaces()
-      .then((data) => {
-        console.log('DATA', data);
-        setLocs(data);
+      .then(({ nearbyWorkspaces, allWorkspaceInfo, photos }) => {
+        setLocs(nearbyWorkspaces);
+        setAllInfo(allWorkspaceInfo);
+        setPic(photos);
       })
       .catch(() => setLocs(false));
-  }
+  }, []);
 
   if (locs === null || locs === false || locs.length === 0) {
     return <></>;
   }
-  // console.log('DEETS', details);
+
   return (
     <>
       <Title />
       {locs
-        .slice(0, 1)
-        .filter((loc) => loc.workspaceId < 100)
+        .slice(0, 6)
+        .filter((loc) => loc.workspaceId < 10000000)
         .map((location) => (
           <Workspace
             key={location.workspaceId}
             location={location}
-            allIds={locs.map((x) => x.workspaceId)}
-            details={details}
+            allIds={allIds}
+            allInfo={allInfo}
+            details={null}
+            pic={pic}
           />
         ))}
     </>

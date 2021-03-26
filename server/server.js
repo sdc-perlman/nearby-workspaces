@@ -24,12 +24,12 @@ app.get('/workspace-api/workspace/:id', (req, res) => {
   res.json(placeholderData.workspaceData);
 });
 
-app.get('/api/workspace-description/:id', (req, res) => {
-  res.json(placeholderData.workspaceDescriptionData);
+app.get('/api/workspace-info/:id', (req, res) => {
+  res.json(placeholderData.allWorkspaceInfo);
 });
 
 app.get('/api/photos/:id', (req, res) => {
-  console.log(req.query.ids);
+  console.log('sup');
   // ***keeping this code around since Becky has this service***
   // const { id } = req.params;
   // const API = `http://localhost:6001/api/photos/${id}`;

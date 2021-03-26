@@ -1,74 +1,51 @@
 import React, { useState } from 'react';
 import LoadingWorkspace from './LoadingWorkspace';
-import { getWorkspaceInfo } from '../../actions';
+// import { getWorkspaceInfo } from '../../actions';
 
-export default ({ location: { workspaceId, neighborhood }, allIds, details = null }) => {
-  const [space, setSpace] = useState(details);
-  // use passed in id to get details for given workspace
-  if (space === null) {
-    getWorkspaceInfo(workspaceId, allIds)
-      .then((res) => {
-        setSpace(res);
-      })
-      .catch(() => {
-        setSpace(false);
-      });
-  }
-
-  // loading and error cases
-  if (space === null) {
+export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
+  // loading
+  if (allInfo.length === 0) {
     return (
       <LoadingWorkspace />
     );
   }
-  if (space === false) {
-    return <></>;
-  }
-
-  const {
-    amenities,
-    photo,
-    description,
-    rates,
-  } = space;
 
   // conditionally render array of amenities data
-  const Amenities = ({ amenities: { amenities } }) => {
+  function Amenities({ amenities: { amenities } }) {
     if (!amenities) {
       return <></>;
     }
     const rest = amenities.length - 5;
     return (
       <>
-        { amenities.slice(0, 5).map((am) => (
+        {amenities.slice(0, 5).map((am) => (
           <li key={`${am.name}-${am.id}`}>
             &#8226;
-            { am.name }
+            {am.name}
           </li>
         ))}
         <br />
-        { rest > 0 && <li> + {rest} more </li>}
+        {rest > 0 && <li> + {rest} more </li>}
       </>
     );
-  };
+  }
 
   // insert any available data into workspace-card
   return (
     <div className="nb-container">
       <a href={`/buildings/${workspaceId}`} className="light-text">
         <div className="nb-grid">
-          {/* <div className="nb-photo-container" style={{background: `url(${photo.url})`}}> */}
           <div className="nb-photo-container">
-            <img className="nb-photo" src={photo.url} alt="" />
+            <img className="nb-photo" src={pic.url} alt="" />
           </div>
           <div className="nb-description-container">
             <div>
-              <h3 className="nb-description-title ">{ description.name || ''}</h3>
+              <h3 className="nb-description-title ">{ allInfo.workspaceDescriptionData.name || ''}</h3>
               <p className="light-text bold-text">{ neighborhood || ''}</p>
             </div>
             <div className="light-text small-text bold-text">
               <ul className="nb-amenities-list">
-                <Amenities amenities={amenities} />
+                <Amenities amenities={allInfo.amenitiesData} />
               </ul>
             </div>
           </div>
@@ -78,8 +55,8 @@ export default ({ location: { workspaceId, neighborhood }, allIds, details = nul
             <p>Available workspace</p>
           </div>
           <div className="nb-pricing-price pad-10">
-            { rates.membership_rate ? (
-                <p>from <span className="bolder-text">${ rates.membership_rate }/mo</span></p>
+            { allInfo.workspaceData.membership_rate ? (
+                <p>from <span className="bolder-text">${allInfo.workspaceData.membership_rate}/mo</span></p>
             ) : <p>View Inventory</p>}
           </div>
         </div>

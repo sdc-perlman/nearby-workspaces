@@ -1,10 +1,12 @@
+const axios = require('axios');
 const workspaceRouter = require('express').Router();
 const { Sequelize } = require('sequelize');
 const sequelize = require('../postgres/index');
 
-const WorkspaceLocation = require('../db/models/WorkspaceLocation');
+// const WorkspaceLocation = require('../db/models/WorkspaceLocation');
 const dataStructuring = require('./dataStructuring');
-// const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
+const { allWorkspaceInfo } = require('../placeholderData');
+const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
 
 const Op = Sequelize.Op;
@@ -12,33 +14,36 @@ const Op = Sequelize.Op;
 workspaceRouter.get('/:workspaceId', async (req, res) => {
   try {
     const { workspaceId } = req.params;
-    // const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
-    // WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
-    // const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4 OFFSET 5000;`);
-    // const nearbyWorkspaces = await WorkspaceLocation.findAll({
-    //   where: {
-    //     workspaceId: {
-    //       [Op.in]: [...locationPointers.map((x) => x.workspaceId)],
-    //     },
-    //   },
-    // });
-    // const finalData = dataStructuring(origin, locationPointers, nearbyWorkspaces);
-    const origin = await WorkspaceLocation.findOne({ workspaceId });
-
-    const nearbyWorkspaces = await WorkspaceLocation.find({
-      geometry: {
-        $near: {
-          $geometry: origin.geometry,
-          $maxDistance: 5000
-        }
+    const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
+    WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
+    const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4 OFFSET 5000;`);
+    const nearbyWorkspaces = await WorkspaceLocation.findAll({
+      where: {
+        workspaceId: {
+          [Op.in]: [...locationPointers.map((x) => x.workspaceId)],
+        },
       },
-      workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
     });
+    // const finalData = dataStructuring(origin, locationPointers, nearbyWorkspaces);
 
-    res.status(200).json({ origin, nearbyWorkspaces });
-    // console.log(finalData);
+    // const origin = await WorkspaceLocation.findOne({ workspaceId });
+
+    // const nearbyWorkspaces = await WorkspaceLocation.find({
+    //   geometry: {
+    //     $near: {
+    //       $geometry: origin.geometry,
+    //       $maxDistance: 5000
+    //     }
+    //   },
+    //   workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
+    // });
+
     // res.status(200).json({ origin, nearbyWorkspaces });
-    res.status(200).send();
+    // console.log(finalData);
+    // console.log(allWorkspaceInfo);
+    const { data: photos } = await axios.get(`http://localhost:5001/api/photos/${workspaceId}?ids=${locationPointers.map((x) => x.workspaceId).join(',')}`);
+    res.status(200).json({ origin, nearbyWorkspaces, allWorkspaceInfo, photos });
+    // res.status(200).send();
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)

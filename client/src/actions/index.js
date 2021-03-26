@@ -3,7 +3,7 @@ import axios from 'axios';
 axios.defaults.timeout = 3000;
 const nearbyAPI = '/api/nearbyworkspaces';
 const amenitiesAPI = '/amenities-api/amenity';
-const descriptionAPI = '/api/workspace-description';
+const descriptionAPI = '/api/workspace-info';
 const ratesAPI = '/workspace-api/workspace';
 const photoAPI = '/api/photos';
 
@@ -25,7 +25,7 @@ export const getWorkspaces = () => {
       if (data.success === false) {
         resolve(false);
       }
-      resolve(data.nearbyWorkspaces);
+      resolve(data);
     } catch (error) {
       reject(error);
     }
@@ -52,21 +52,20 @@ export const getRates = async (id) => {
 
 // aggregate data from all getters into one object
 export const getWorkspaceInfo = (id, allIds) => {
-  console.log(allIds);
   return new Promise(async (resolve, reject) => {
     try {
       const info = {};
-      const description = await getDescription(id, allIds);
-      info.description = description ? description.data : {};
+      const allInfo = await axios.get(`/api/workspace-info/${id}`).catch(() => false);
+      info.allInfo = allInfo ? allInfo.data : {};
 
       const photo = await getPhoto(id, allIds);
       info.photo = photo ? photo.data : {};
 
-      const amenities = await getAmenities(id);
-      info.amenities = amenities ? amenities.data : {};
+      // const amenities = await getAmenities(id);
+      // info.amenities = amenities ? amenities.data : {};
 
-      const rates = await getRates(id);
-      info.rates = rates ? rates.data[0] : {};
+      // const rates = await getRates(id);
+      // info.rates = rates ? rates.data[0] : {};
 
       resolve(info);
     } catch (error) {
@@ -75,3 +74,5 @@ export const getWorkspaceInfo = (id, allIds) => {
   })
     .catch(() => false);
 };
+
+
