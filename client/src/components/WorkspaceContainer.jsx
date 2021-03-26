@@ -27,8 +27,6 @@ export default () => {
     <>
       <Title />
       {locs
-        .slice(0, 6)
-        .filter((loc) => loc.workspaceId < 10000000)
         .map((location) => (
           <Workspace
             key={location.workspaceId}

@@ -3,7 +3,6 @@ const workspaceRouter = require('express').Router();
 const { Sequelize } = require('sequelize');
 const sequelize = require('../postgres/index');
 
-// const WorkspaceLocation = require('../db/models/WorkspaceLocation');
 const dataStructuring = require('./dataStructuring');
 const { allWorkspaceInfo } = require('../placeholderData');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
@@ -24,26 +23,8 @@ workspaceRouter.get('/:workspaceId', async (req, res) => {
         },
       },
     });
-    // const finalData = dataStructuring(origin, locationPointers, nearbyWorkspaces);
-
-    // const origin = await WorkspaceLocation.findOne({ workspaceId });
-
-    // const nearbyWorkspaces = await WorkspaceLocation.find({
-    //   geometry: {
-    //     $near: {
-    //       $geometry: origin.geometry,
-    //       $maxDistance: 5000
-    //     }
-    //   },
-    //   workspaceId: { $ne: origin.workspaceId, $lte: 100, $gte: 1 }
-    // });
-
-    // res.status(200).json({ origin, nearbyWorkspaces });
-    // console.log(finalData);
-    // console.log(allWorkspaceInfo);
     const { data: photos } = await axios.get(`http://localhost:5001/api/photos/${workspaceId}?ids=${locationPointers.map((x) => x.workspaceId).join(',')}`);
     res.status(200).json({ origin, nearbyWorkspaces, allWorkspaceInfo, photos });
-    // res.status(200).send();
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)
