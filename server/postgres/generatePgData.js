@@ -1,0 +1,33 @@
+const faker = require('faker');
+const uuid = require('uuid').v4;
+const path = require('path');
+
+const generatePgData = (id) => {
+  let workspaceLocationsData = '';
+  let locationPointersData = '';
+  const streetNumber = faker.random.number(1000);
+  const streetName = faker.address.streetName();
+  const city = faker.address.city();
+  const state = faker.address.stateAbbr();
+  const zipCode = faker.address.zipCode().slice(0, 5);
+  const neighborhood = `${faker.address.direction()} ${city}`;
+  const rawAddress = `${streetNumber} ${streetName}, ${city}, ${state} ${zipCode}, USA`;
+  const locationPointerUuid = uuid();
+
+  locationPointersData += `${locationPointerUuid}|${id}|${faker.address.longitude(-117, -82)}|${faker.address.latitude(33, 41)}\n`;
+
+  workspaceLocationsData += `${uuid()}|${faker.lorem.slug()}|${id}|${rawAddress}|${rawAddress}|${streetName}|${streetNumber}|${neighborhood}|${city}|${state}|United States|US|${zipCode}|${locationPointerUuid}\n`;
+
+  const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
+
+  const rawQuery2 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode","locationPointerUuid") FROM '${path.join(__dirname, './dataFiles/workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
+
+  return {
+    workspaceLocationsData,
+    locationPointersData,
+    rawQuery1,
+    rawQuery2
+  };
+};
+
+module.exports = generatePgData;
