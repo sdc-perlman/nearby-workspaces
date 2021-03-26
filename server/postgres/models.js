@@ -1,14 +1,12 @@
-const sequelize = require('./');
 const { DataTypes, Model } = require('sequelize');
-
-//WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
+const sequelize = require('.');
 
 class LocationPointer extends Model {}
 
 LocationPointer.init({
   uuid: {
     type: DataTypes.UUID,
-    allowNull: false
+    allowNull: false,
   },
   workspaceId: {
     type: DataTypes.INTEGER,
@@ -21,7 +19,7 @@ LocationPointer.init({
   timestamps: false,
 });
 
-//remove sequelize auto generated primary key for a faster seed
+// remove sequelize auto generated primary key for a faster seed
 LocationPointer.removeAttribute('id');
 
 class WorkspaceLocation extends Model {}
@@ -88,7 +86,6 @@ WorkspaceLocation.init({
 });
 
 WorkspaceLocation.removeAttribute('id');
-
 
 module.exports = {
   WorkspaceLocation,

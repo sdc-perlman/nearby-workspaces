@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const { connection } = require('mongoose');
 
 const app = require('../server.js');
-const WorkspaceLocation = require('../db/models/WorkspaceLocation');
+
 const request = supertest(app);
 
 afterAll(async () => {

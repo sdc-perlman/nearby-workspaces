@@ -1,5 +1,5 @@
-const path = require('path');
 require('dotenv').config();
+
 const { connect, connection } = require('mongoose');
 
 connection.on('error', console.error.bind(console, 'mongoose connection error:'));

@@ -1,11 +1,11 @@
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../', '.env')});
+require('dotenv').config({ path: path.join(__dirname, '../', '.env') });
 const morgan = require('morgan');
 const cors = require('cors');
 const express = require('express');
 const axios = require('axios');
 require('./db');
-const { workspaceRouter, notFound, errorHandler} = require('./controllers');
+const workspaceRouter = require('./controllers');
 const placeholderData = require('./placeholderData');
 
 const app = express();
@@ -16,10 +16,10 @@ app.use(cors());
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
 app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'client', 'dist')));
 
-//Main Route
+// Main Route
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
 
-//Service Data Dependencies
+// Service Data Dependencies
 app.get('/workspace-api/workspace/:id', (req, res) => {
   res.json(placeholderData.workspaceData);
 });
@@ -29,7 +29,7 @@ app.get('/api/workspace-description/:id', (req, res) => {
 });
 
 app.get('/api/photos/:id', (req, res) => {
-  //***keeping this code around since Becky has this service***
+  // ***keeping this code around since Becky has this service***
   // const { id } = req.params;
   // const API = `http://localhost:6001/api/photos/${id}`;
   // try {
@@ -44,9 +44,5 @@ app.get('/api/photos/:id', (req, res) => {
 app.get('/amenities-api/amenity/:id', (req, res) => {
   res.json(placeholderData.amenitiesData);
 });
-
-app.use('*', notFound);
-
-app.use(errorHandler);
 
 module.exports = app;

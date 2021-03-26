@@ -1,13 +1,14 @@
 const path = require('path');
+
 const PUB = path.resolve(process.env.PWD, 'client', 'dist');
 const SRC = path.resolve(process.env.PWD, 'client', 'src');
 
 module.exports = {
   mode: 'development',
-  entry: ['@babel/polyfill', SRC + '/index.jsx'],
+  entry: ['@babel/polyfill', `${SRC}/index.jsx`],
   output: {
     path: PUB,
-    filename: 'nearby.js'
+    filename: 'nearby.js',
   },
   module: {
     rules: [
@@ -15,12 +16,12 @@ module.exports = {
         test: /\.js/,
         exclude: /node_modules/,
         use: 'babel-loader',
-        include: SRC
+        include: SRC,
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
-  }
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
 };

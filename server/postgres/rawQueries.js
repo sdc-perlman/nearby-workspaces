@@ -1,4 +1,4 @@
-const sequelize = require('./');
+const sequelize = require('.');
 
 const keyQuery = `
 ALTER TABLE ONLY public."LocationPointers"
@@ -26,10 +26,7 @@ CREATE INDEX CONCURRENTLY locationPointerIndex
     USING HASH ("workspaceId");
 `;
 
-
-
-
-(async() => {
+(async () => {
   try {
     await sequelize.query(keyQuery);
     await sequelize.query(indexQuery1);
