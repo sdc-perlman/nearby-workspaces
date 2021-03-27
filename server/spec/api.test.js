@@ -13,24 +13,27 @@ beforeAll(async () => {
 afterAll(async () => {
   server.close();
   await db.close();
-  // await connection.close();
 });
 
 describe('CRUD API Endpoints Tests', () => {
-  // it('should Create a new record in the database where there is a POST request.', async (done) => {
-  //   const sampleInput = {
-  //     rawAddress: '226 Prospect St, South Haven, MI 49090, USA',
-  //     workspaceId: 101,
-  //   };
+  it('should Create a new record in the database where there is a POST request.', async (done) => {
+    const sampleLocationInput = {
+      workspaceId: 10000002,
+      geog: {
+        crs: { type: 'name', properties: { name: 'EPSG:4326' } },
+        type: 'Point',
+        coordinates: [-92.701, 35.5889],
+      },
+    };
 
-  //   const res = await request.post('/api/nearbyworkspaces/buildings/3')
-  //     .send({ ...sampleInput })
-  //     .set('Accept', 'application/json')
-  //     .expect(200);
-
-  //   expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }))
-  //   done();
-  // });
+    const res = await request.post('/api/nearbyworkspaces/buildings/3')
+      .send({ ...sampleLocationInput })
+      .set('Accept', 'application/json');
+      // .expect(200);
+    expect(res.status).toBe(200);
+    // expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }));
+    done();
+  });
 
   it('should Read from database given a workspace id param.', async (done) => {
     const res = await request.get('/api/nearbyworkspaces/buildings/3');

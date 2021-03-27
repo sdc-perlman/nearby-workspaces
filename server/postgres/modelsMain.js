@@ -89,6 +89,7 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   },
   locationPointerUuid: {
     type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
     references: {
       model: 'LocationPointers',
       key: 'uuid',

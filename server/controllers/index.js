@@ -15,6 +15,8 @@ workspaceRouter.get('/:workspaceId', async (req, res) => {
     const { workspaceId } = req.params;
     const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
     WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
+    const { dataValues: { geog } } = await LocationPointer.findOne({ where: { workspaceId } });
+    console.log(geog);
     const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4 OFFSET 5000;`);
     const nearbyWorkspaces = await WorkspaceLocation.findAll({
       where: {
@@ -34,7 +36,8 @@ workspaceRouter.get('/:workspaceId', async (req, res) => {
 
 workspaceRouter.post('/:workspaceId', async (req, res) => {
   try {
-    const origin = await WorkspaceLocation.create({ ...req.body });
+    const origin = await LocationPointer.create({ ...req.body });
+    console.log(origin);
     res.status(200).json({ origin });
   } catch (err) {
     console.log(err);
