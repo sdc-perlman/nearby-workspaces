@@ -4,7 +4,7 @@ const db = require('../postgres');
 const app = require('../server.js');
 
 const request = supertest(app);
-const server = app.listen(5001, () => console.log('Test server started'));
+const server = app.listen(5001, () => console.log('Testing Server on PORT 5001'));
 
 beforeAll(async () => {
   await db.sync();
