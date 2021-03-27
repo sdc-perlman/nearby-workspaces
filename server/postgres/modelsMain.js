@@ -104,6 +104,11 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
       fields: ['workspaceId'],
       using: 'HASH',
     },
+    {
+      name: 'locationPointerFK_index',
+      fields: ['locationPointerUuid'],
+      using: 'HASH',
+    },
   ],
 });
 

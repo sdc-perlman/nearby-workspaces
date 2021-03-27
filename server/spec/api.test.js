@@ -16,9 +16,9 @@ afterAll(async () => {
 });
 
 describe('CRUD API Endpoints Tests', () => {
-  it('should Create a new record in the database where there is a POST request.', async (done) => {
+  it('should Create a new record in the LocationPointers table based on coordinates which will update the WorkspaceLocations table with the correct location information.', async (done) => {
     const sampleLocationInput = {
-      workspaceId: 10000002,
+      workspaceId: 10000001,
       geog: {
         crs: { type: 'name', properties: { name: 'EPSG:4326' } },
         type: 'Point',
@@ -26,42 +26,65 @@ describe('CRUD API Endpoints Tests', () => {
       },
     };
 
-    const res = await request.post('/api/nearbyworkspaces/buildings/3')
+    const reverseGeoInfo = {
+      zipcode: '72141',
+      state_abbr: 'AR',
+      latitude: '35.519210',
+      longitude: '-92.66488',
+      city: 'Scotland',
+      state: 'Arkansas',
+      distance: 8.409921435637512,
+    };
+
+    const res = await request.post('/api/nearbyworkspaces/buildings/')
       .send({ ...sampleLocationInput })
-      .set('Accept', 'application/json');
-      // .expect(200);
-    expect(res.status).toBe(200);
-    // expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }));
+      .set('Accept', 'application/json')
+      .expect(200);
+
+    expect(res.body.revGeo).toEqual(expect.objectContaining({ ...reverseGeoInfo }));
+
     done();
   });
 
   it('should Read from database given a workspace id param.', async (done) => {
-    const res = await request.get('/api/nearbyworkspaces/buildings/3');
+    const res = await request.get('/api/nearbyworkspaces/buildings/10000001');
     expect(res.status).toBe(200);
     done();
   });
 
-  // it('should Update record given a workspace id param.', async (done) => {
-  //   const sampleInput = {
-  //     rawAddress: '10245 Briar Creek Lane, Carmel, IN 46033, USA',
-  //     workspaceId: 101,
-  //   };
-  //   const workspaceId = 101;
-  //   const res = await request.put(`/api/nearbyworkspaces/buildings/${workspaceId}`)
-  //     .send({ ...sampleInput })
-  //     .set('Accept', 'application/json')
-  //     .expect(200);
-  //   expect(res.body.origin).toEqual(expect.objectContaining({ ...sampleInput }))
-  //   done();
-  // });
+  it('should Update record given a workspace id param.', async (done) => {
+    const sampleWorkspaceLocationInput = {
+      city: 'Fishers',
+      state: 'IN',
+      zipCode: '46037',
+    };
 
-  // it('should Delete record given a workspace id param.', async (done) => {
-  //   const workspaceId = 101;
-  //   const getRes = await request.get(`/api/nearbyworkspaces/buildings/${101}`);
-  //   const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${101}`);
-  //   expect(getRes.status).toBe(200);
-  //   expect(delRes.status).toBe(200);
-  //   expect(getRes.body.origin).toEqual(expect.objectContaining({ ...delRes.body.origin }));
-  //   done();
-  // });
+    const workspaceId = 10000001;
+    const res = await request.put(`/api/nearbyworkspaces/buildings/${workspaceId}`)
+      .send({ ...sampleWorkspaceLocationInput })
+      .set('Accept', 'application/json')
+      .expect(200);
+
+    expect(res.body.origin[1][0])
+      .toEqual(expect.objectContaining({ ...sampleWorkspaceLocationInput }));
+
+    done();
+  });
+
+  it('should Delete record given a workspace id param.', async (done) => {
+    const workspaceId = 10000001;
+    const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${workspaceId}`);
+    expect(delRes.status).toBe(200);
+    console.log(delRes.body.origin);
+    expect(delRes.body.origin).toEqual(1);
+    done();
+  });
+
+  it('Deleted record should not be present.', async (done) => {
+    const workspaceId = 10000001;
+    const getRes = await request.get(`/api/nearbyworkspaces/buildings/${workspaceId}`);
+    expect(getRes.status).toBe(500);
+
+    done();
+  });
 });
