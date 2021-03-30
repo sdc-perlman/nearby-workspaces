@@ -5,6 +5,7 @@ import LoadingWorkspace from './LoadingWorkspace';
 export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
   // loading
   if (allInfo.length === 0) {
+    console.log('hi');
     return (
       <LoadingWorkspace />
     );
@@ -25,11 +26,10 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
           </li>
         ))}
         <br />
-        {rest > 0 && <li> + {rest} more </li>}
+        {rest > 0 && <li>{` + ${rest} more `}</li>}
       </>
     );
   }
-
   // insert any available data into workspace-card
   return (
     <div className="nb-container">
@@ -55,8 +55,8 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
             <p>Available workspace</p>
           </div>
           <div className="nb-pricing-price pad-10">
-            { allInfo.workspaceData.membership_rate ? (
-                <p>from <span className="bolder-text">${allInfo.workspaceData.membership_rate}/mo</span></p>
+            { allInfo.workspaceData[0].membership_rate ? (
+                <p>from <span className="bolder-text">${allInfo.workspaceData[0].membership_rate}/mo</span></p>
             ) : <p>View Inventory</p>}
           </div>
         </div>
