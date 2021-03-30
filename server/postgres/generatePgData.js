@@ -1,6 +1,5 @@
 const faker = require('faker');
 const uuid = require('uuid').v4;
-const path = require('path');
 
 const generatePgData = (id) => {
   let workspaceLocationsData = '';
@@ -14,7 +13,7 @@ const generatePgData = (id) => {
   const rawAddress = `${streetNumber} ${streetName}, ${city}, ${state} ${zipCode}, USA`;
   const locationPointerUuid = uuid();
 
-  locationPointersData += `${locationPointerUuid}|${id}|${faker.address.longitude(-117, -82)}|${faker.address.latitude(33, 41)}\n`;
+  locationPointersData += `${locationPointerUuid}|${id}|POINT(${faker.address.longitude(-117, -82)} ${faker.address.latitude(33, 41)})\n`;
 
   workspaceLocationsData += `${uuid()}|${faker.lorem.slug()}|${id}|${rawAddress}|${rawAddress}|${streetName}|${streetNumber}|${neighborhood}|${city}|${state}|United States|US|${zipCode}|${locationPointerUuid}\n`;
 

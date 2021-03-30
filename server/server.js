@@ -3,8 +3,8 @@ require('dotenv').config({ path: path.join(__dirname, '../', '.env') });
 const morgan = require('morgan');
 const cors = require('cors');
 const express = require('express');
-const axios = require('axios');
-require('./db');
+
+// require('./db');
 const workspaceRouter = require('./controllers');
 const placeholderData = require('./placeholderData');
 
@@ -20,14 +20,6 @@ app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'c
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
 
 // Service Data Dependencies
-app.get('/workspace-api/workspace/:id', (req, res) => {
-  res.json(placeholderData.workspaceData);
-});
-
-app.get('/api/workspace-description/:id', (req, res) => {
-  res.json(placeholderData.workspaceDescriptionData);
-});
-
 app.get('/api/photos/:id', (req, res) => {
   // ***keeping this code around since Becky has this service***
   // const { id } = req.params;
@@ -39,10 +31,6 @@ app.get('/api/photos/:id', (req, res) => {
   //   res.status(404).json();
   // }
   res.json(placeholderData.photosData);
-});
-
-app.get('/amenities-api/amenity/:id', (req, res) => {
-  res.json(placeholderData.amenitiesData);
 });
 
 module.exports = app;

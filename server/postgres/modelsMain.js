@@ -1,7 +1,7 @@
 const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('.');
 
-// WILL EVENTUALLY BREAK THIS OUT AS MY MAIN MODEL MAKE UP
+// MAIN MODEL MAKE UP AFTER SEEDER IS COMPLETE
 
 const LocationPointer = sequelize.define('LocationPointer', {
   uuid: {
@@ -14,14 +14,21 @@ const LocationPointer = sequelize.define('LocationPointer', {
     type: DataTypes.INTEGER,
     unique: true,
   },
-  longitude: DataTypes.DECIMAL,
-  latitude: DataTypes.DECIMAL,
+  geog: {
+    type: DataTypes.GEOGRAPHY('POINT'),
+  },
 }, {
   timestamps: false,
   indexes: [
     {
-      unique: true,
+      name: 'locationPointerIndex',
       fields: ['workspaceId'],
+      using: 'HASH',
+    },
+    {
+      name: 'geogIndex',
+      fields: ['geog'],
+      using: 'GIST',
     },
   ],
 });
@@ -82,8 +89,9 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   },
   locationPointerUuid: {
     type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
     references: {
-      model: 'LocationPointer',
+      model: 'LocationPointers',
       key: 'uuid',
     },
     allowNull: false,
@@ -92,7 +100,14 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
   timestamps: false,
   indexes: [
     {
+      name: 'workspaceLocationIndex',
       fields: ['workspaceId'],
+      using: 'HASH',
+    },
+    {
+      name: 'locationPointerFK_index',
+      fields: ['locationPointerUuid'],
+      using: 'HASH',
     },
   ],
 });

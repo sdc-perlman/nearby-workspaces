@@ -14,23 +14,24 @@ ALTER TABLE ONLY public."WorkspaceLocations"
     ON DELETE CASCADE;
 `;
 
-const indexQuery1 = `
-CREATE INDEX CONCURRENTLY workspaceLocationIndex
-    ON public."WorkspaceLocations"
-    USING HASH ("workspaceId");
-`;
+// const keyQuery2 = `
+// ALTER TABLE ONLY public."LocationPointers"
+//     ADD CONSTRAINT LocationPointers_fkey
+//     FOREIGN KEY ("locationPointerUuid")
+//     REFERENCES public."LocationPointers" (uuid)
+//     ON DELETE CASCADE;
+// `;
 
-const indexQuery2 = `
-CREATE INDEX CONCURRENTLY locationPointerIndex
-    ON public."LocationPointers"
-    USING HASH ("workspaceId");
-`;
+// const indexQuery = `
+// CREATE INDEX "geogIndex"
+//     ON public."LocationPointers"
+//     USING GIST (geog);
+// `;
 
 (async () => {
   try {
     await sequelize.query(keyQuery);
-    await sequelize.query(indexQuery1);
-    await sequelize.query(indexQuery2);
+    console.log('KEYS GENERATED');
     process.exit();
   } catch (err) {
     console.log(err);

@@ -1,6 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('.');
-
+// Models for Seeding
 class LocationPointer extends Model {}
 
 LocationPointer.init({
@@ -12,8 +12,9 @@ LocationPointer.init({
     type: DataTypes.INTEGER,
     unique: true,
   },
-  longitude: DataTypes.DECIMAL,
-  latitude: DataTypes.DECIMAL,
+  geog: {
+    type: DataTypes.GEOGRAPHY('POINT'),
+  },
 }, {
   sequelize,
   timestamps: false,

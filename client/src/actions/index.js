@@ -1,46 +1,45 @@
-import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 import axios from 'axios';
+// import { amenitiesService, photoService, descriptionService} from '../data/data.js';
 axios.defaults.timeout = 3000;
 const nearbyAPI = '/api/nearbyworkspaces';
 const amenitiesAPI = '/amenities-api/amenity';
-const descriptionAPI = '/api/workspace-description';
+const descriptionAPI = '/api/workspace-info';
 const ratesAPI = '/workspace-api/workspace';
 const photoAPI = '/api/photos';
 
 // get list of workspaces near given id
 export const getWorkspaces = () => {
   return new Promise(async (resolve, reject) => {
-    let splitUrl = window.location.pathname.split('/').filter(el => el);
-    let rawId =  splitUrl[splitUrl.length - 1];
+    const splitUrl = window.location.pathname.split('/').filter((el) => el);
+    const rawId = splitUrl[splitUrl.length - 1];
 
     const id = parseInt(rawId);
 
-    if (isNaN(id)) {
+    if (Number.isNaN(id)) {
       resolve(false);
       return;
     }
 
     try {
       const { data } = await axios.get(`${nearbyAPI}/buildings/${id}`);
-      console.log(data);
       if (data.success === false) {
         resolve(false);
       }
-      resolve(data.nearbyWorkspaces);
+      resolve(data);
     } catch (error) {
       reject(error);
     }
   })
-  .catch(error => false);
+    .catch(() => false);
 };
 
 // getters for different services
 export const getDescription = async (id) => {
-    return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
+  return axios.get(`${descriptionAPI}/${id}`).catch(() => false);
 };
 
-export const getPhoto = (id) => {
-  return axios.get(`${photoAPI}/${id}`).catch(() => false);
+export const getPhoto = (id, allIds) => {
+  return axios.get(`${photoAPI}/${id}?ids=${allIds.join(',')}`).catch(() => false);
 };
 
 export const getAmenities = async (id) => {
@@ -48,32 +47,32 @@ export const getAmenities = async (id) => {
 };
 
 export const getRates = async (id) => {
-    return axios.get(`${ratesAPI}/${id}`).catch(() => false);
-
-}
+  return axios.get(`${ratesAPI}/${id}`).catch(() => false);
+};
 
 // aggregate data from all getters into one object
-export const getWorkspaceInfo = (id) => {
-  return new Promise( async (resolve, reject) => {
+export const getWorkspaceInfo = (id, allIds) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const info = {};
-      const description = await getDescription(id);
-      info.description = description ? description.data : {};
+      const allInfo = await axios.get(`/api/workspace-info/${id}`).catch(() => false);
+      info.allInfo = allInfo ? allInfo.data : {};
 
-      const photo = await getPhoto(id);
+      const photo = await getPhoto(id, allIds);
       info.photo = photo ? photo.data : {};
 
-      const amenities = await getAmenities(id);
-      info.amenities = amenities ? amenities.data : {};
+      // const amenities = await getAmenities(id);
+      // info.amenities = amenities ? amenities.data : {};
 
-      const rates = await getRates(id);
-      info.rates = rates ? rates.data[0] : {};
+      // const rates = await getRates(id);
+      // info.rates = rates ? rates.data[0] : {};
 
       resolve(info);
     } catch (error) {
       reject(error);
     }
   })
-    .catch(err => false);
+    .catch(() => false);
 };
+
 
