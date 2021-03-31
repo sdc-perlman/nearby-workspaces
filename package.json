@@ -13,7 +13,8 @@
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",
     "test-server": "jest server/spec --detectOpenHandles",
-    "test-unit": "jest client/spec/unit"
+    "test-unit": "jest client/spec/unit",
+    "artillery": "artillery run artillery-script.yml"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
@@ -47,6 +48,7 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
+    "artillery": "^1.6.2",
     "css-loader": "^5.0.1",
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.1",
