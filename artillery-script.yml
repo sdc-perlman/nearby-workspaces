@@ -1,9 +1,14 @@
 config:
-  target: "http://http://localhost:5001/buildings/23"
+  target: "http://localhost:5001/api/nearbyworkspaces"
   phases:
-    - duration: 60
-      arrivalRate: 20
+    - duration: 1
+      arrivalRate: 2
 scenarios:
   - flow:
     - get:
-      - url: "/"
+        url: "/buildings/23/"
+    - post:
+          url: "/buildings/artillery/10000002"
+          json:
+            long: "-92.701"
+            lat: "35.5889"

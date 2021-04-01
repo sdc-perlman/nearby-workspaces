@@ -12,7 +12,6 @@ export default () => {
   const [pic, setPic] = useState([]);
 
   useEffect(async () => {
-    console.log('howmany?')
     const splitUrl = window.location.pathname.split('/').filter((el) => el);
     const rawId = splitUrl[splitUrl.length - 1];
 
@@ -31,7 +30,6 @@ export default () => {
   }, []);
 
   if (locs === null || locs === false || locs.length === 0) {
-    console.log('dawg?');
     return <></>;
   }
 

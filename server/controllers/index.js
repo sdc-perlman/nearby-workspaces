@@ -4,7 +4,6 @@ const { Sequelize } = require('sequelize');
 const reverse = require('reverse-geocode');
 const sequelize = require('../postgres/index');
 
-const dataStructuring = require('./dataStructuring');
 const { allWorkspaceInfo } = require('../placeholderData');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
@@ -86,6 +85,43 @@ workspaceRouter.delete('/:workspaceId', async (req, res) => {
     const origin = await LocationPointer.destroy({ where: { workspaceId } });
     console.log(origin);
     res.status(200).json({ origin });
+  } catch (err) {
+    console.log(err);
+    res.status(err.status || 500)
+      .send({ success: false, status: err.status || 500, message: err.message });
+  }
+});
+
+// artillery test
+workspaceRouter.post('/artillery/:workspaceId', async (req, res) => {
+  try {
+    const { workspaceId } = req.params;
+    const locationInput = {
+      workspaceId,
+      geog: {
+        crs: { type: 'name', properties: { name: 'EPSG:4326' } },
+        type: 'Point',
+        coordinates: [
+          parseFloat(req.body.long),
+          parseFloat(req.body.lat)],
+      },
+    };
+    const [{ uuid, geog: { coordinates: [long, lat] } }] = await
+    LocationPointer.upsert({ ...locationInput });
+    // const data = await LocationPointer.upsert({ ...locationInput });
+
+    const revGeo = reverse.lookup(lat, long, 'us');
+    const workspaceLocationGeoInfo = {
+      workspaceId,
+      city: revGeo.city,
+      state: revGeo.state_abbr,
+      zipCode: revGeo.zipcode,
+      locationPointerUuid: uuid,
+    };
+
+    const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
+
+    res.status(200).json({ origin, revGeo });
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)
