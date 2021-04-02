@@ -13,7 +13,7 @@ const placeholderData = require('./placeholderData');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(cors());
 app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
 app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'client', 'dist')));

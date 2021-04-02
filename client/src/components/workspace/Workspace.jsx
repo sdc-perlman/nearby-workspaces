@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LoadingWorkspace from './LoadingWorkspace';
 // import { getWorkspaceInfo } from '../../actions';
 
 export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
   // loading
   if (allInfo.length === 0) {
-    console.log('hi');
     return (
       <LoadingWorkspace />
     );
@@ -56,7 +55,12 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
           </div>
           <div className="nb-pricing-price pad-10">
             { allInfo.workspaceData[0].membership_rate ? (
-                <p>from <span className="bolder-text">${allInfo.workspaceData[0].membership_rate}/mo</span></p>
+              <p>
+                from
+                <span className="bolder-text">
+                  {`$${allInfo.workspaceData[0].membership_rate}/mo`}
+                </span>
+              </p>
             ) : <p>View Inventory</p>}
           </div>
         </div>
