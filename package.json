@@ -12,7 +12,7 @@
     "dev-build": "webpack --watch",
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",
-    "test-server": "jest server/spec --detectOpenHandles",
+    "test-server": "jest server/spec --detectOpenHandles --forceExit",
     "test-unit": "jest client/spec/unit",
     "artillery": "artillery run artillery-script.yml"
   },

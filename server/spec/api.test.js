@@ -18,7 +18,6 @@ afterAll(async () => {
 describe('CRUD API Endpoints Tests', () => {
   it('should Create a new record in the LocationPointers table based on coordinates which will update the WorkspaceLocations table with the correct location information.', async (done) => {
     const sampleLocationInput = {
-      workspaceId: 10000001,
       geog: {
         crs: { type: 'name', properties: { name: 'EPSG:4326' } },
         type: 'Point',
@@ -36,7 +35,7 @@ describe('CRUD API Endpoints Tests', () => {
       distance: 8.409921435637512,
     };
 
-    const res = await request.post('/api/nearbyworkspaces/buildings/')
+    const res = await request.post('/api/nearbyworkspaces/buildings/10000001')
       .send({ ...sampleLocationInput })
       .set('Accept', 'application/json')
       .expect(200);
@@ -75,14 +74,15 @@ describe('CRUD API Endpoints Tests', () => {
     const workspaceId = 10000001;
     const delRes = await request.delete(`/api/nearbyworkspaces/buildings/${workspaceId}`);
     expect(delRes.status).toBe(200);
-    console.log(delRes.body.origin);
-    expect(delRes.body.origin).toEqual(1);
+    expect(delRes.body.pgDel).toEqual(1);
+    expect(delRes.body.redisDel).toEqual(true);
     done();
   });
 
   it('Deleted record should not be present.', async (done) => {
     const workspaceId = 10000001;
     const getRes = await request.get(`/api/nearbyworkspaces/buildings/${workspaceId}`);
+    console.log(getRes.body);
     expect(getRes.status).toBe(500);
 
     done();

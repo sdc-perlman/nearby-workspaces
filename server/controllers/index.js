@@ -36,7 +36,6 @@ const cache = (req, res, next) => {
 };
 
 workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
-  console.log('nope');
   try {
     const { workspaceId } = req.params;
     const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
@@ -72,9 +71,11 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
   }
 });
 
-workspaceRouter.post('/', async (req, res) => {
+workspaceRouter.post('/:workspaceId', async (req, res) => {
+  const { workspaceId } = req.params;
+  req.body.workspaceId = workspaceId;
   try {
-    const { uuid, workspaceId, geog: { coordinates: [long, lat] } } = await
+    const { uuid, geog: { coordinates: [long, lat] } } = await
     LocationPointer.create({ ...req.body });
 
     const revGeo = reverse.lookup(lat, long, 'us');
@@ -115,76 +116,9 @@ workspaceRouter.put('/:workspaceId', async (req, res) => {
 workspaceRouter.delete('/:workspaceId', async (req, res) => {
   try {
     const { workspaceId } = req.params;
-    const origin = await LocationPointer.destroy({ where: { workspaceId } });
-    console.log(origin);
-    res.status(200).json({ origin });
-  } catch (err) {
-    console.log(err);
-    res.status(err.status || 500)
-      .send({ success: false, status: err.status || 500, message: err.message });
-  }
-});
-
-// artillery test
-
-workspaceRouter.get('/artillery/:workspaceId', async (req, res) => {
-  try {
-    const { workspaceId } = req.params;
-    const { dataValues: origin } = await
-    WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
-
-    // eslint-disable-next-line max-len
-    // const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4 OFFSET 5000;`);
-    // const nearbyWorkspaces = await WorkspaceLocation.findAll({
-    //   where: {
-    //     workspaceId: {
-    //       [Op.in]: [...locationPointers.map((x) => x.workspaceId)],
-    //     },
-    //   },
-    // });
-
-    // const { data: photos } = await axios.get(`http://localhost:5001/api/photos/${workspaceId}?ids=${locationPointers.map((x) => x.workspaceId).join(',')}`);
-    res.status(200).json({
-      origin,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(err.status || 500)
-      .send({ success: false, status: err.status || 500, message: err.message });
-  }
-});
-
-workspaceRouter.post('/artillery/:workspaceId', async (req, res) => {
-  try {
-    const { workspaceId } = req.params;
-    const locationInput = {
-      workspaceId,
-      geog: {
-        crs: { type: 'name', properties: { name: 'EPSG:4326' } },
-        type: 'Point',
-        coordinates: [
-          parseFloat(req.body.long),
-          parseFloat(req.body.lat)],
-      },
-    };
-    const [{ uuid, geog: { coordinates: [long, lat] } }] = await
-    LocationPointer.upsert({ ...locationInput }, { where: { workspaceId } });
-
-    const revGeo = reverse.lookup(lat, long, 'us');
-    const workspaceLocationGeoInfo = {
-      workspaceId,
-      city: revGeo.city,
-      state: revGeo.state_abbr,
-      zipCode: revGeo.zipcode,
-      locationPointerUuid: uuid,
-    };
-
-    const origin = await WorkspaceLocation.upsert(
-      { ...workspaceLocationGeoInfo },
-      { where: { workspaceId } },
-    );
-
-    res.status(200).json({ origin, revGeo });
+    const pgDel = await LocationPointer.destroy({ where: { workspaceId } });
+    const redisDel = client.del(workspaceId);
+    res.status(200).json({ pgDel, redisDel });
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)
