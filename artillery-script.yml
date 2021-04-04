@@ -1,15 +1,19 @@
 config:
   target: "http://localhost:5001/api/nearbyworkspaces"
   phases:
-    - duration: 10
-      arrivalRate: 10
-      name: Warm up phase
-    - duration: 10
-      arrivalRate: 5
-      rampTo: 100
-      name: Ramp up load
-    - duration: 10
-      arrivalRate: 100
+    # - duration: 10
+    #   arrivalRate: 10
+    #   name: Warm up phase
+    # - pause: 10
+    #   name: Break 1
+    # - duration: 10
+    #   arrivalRate: 5
+    #   rampTo: 100
+    #   name: Ramp up load
+    # - pause: 10
+    #   name: Break 2
+    - duration: 60
+      arrivalRate: 1000
       name: Sustained load
 scenarios:
   - flow:

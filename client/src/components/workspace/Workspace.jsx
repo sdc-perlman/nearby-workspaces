@@ -56,7 +56,7 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
           <div className="nb-pricing-price pad-10">
             { allInfo.workspaceData[0].membership_rate ? (
               <p>
-                from
+                {'from '}
                 <span className="bolder-text">
                   {`$${allInfo.workspaceData[0].membership_rate}/mo`}
                 </span>
@@ -67,5 +67,4 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
       </a>
     </div>
   );
-}
-
+};
