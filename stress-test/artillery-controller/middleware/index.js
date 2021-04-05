@@ -1,4 +1,5 @@
 const redis = require('redis');
+const { allWorkspaceInfo, photosData: photos } = require('../../../server/placeholderData');
 
 const client = redis.createClient(6379);
 

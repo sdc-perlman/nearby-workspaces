@@ -47,7 +47,7 @@ artilleryRouter.get('/:workspaceId', getCache, async (req, res) => {
   }
 });
 
-artilleryRouter.post('/artillery/:workspaceId', postCache, async (req, res) => {
+artilleryRouter.post('/:workspaceId', postCache, async (req, res) => {
   const { workspaceId } = req.params;
   req.body.workspaceId = workspaceId;
   if (!req.body.geog) {
@@ -58,8 +58,8 @@ artilleryRouter.post('/artillery/:workspaceId', postCache, async (req, res) => {
     };
   }
   try {
-    const [{ uuid, geog: { coordinates: [long, lat] } }] = await
-    LocationPointer.upsert({ ...req.body });
+    const { uuid, geog: { coordinates: [long, lat] } } = await
+    LocationPointer.create({ ...req.body });
     const revGeo = reverse.lookup(lat, long, 'us');
     const workspaceLocationGeoInfo = {
       workspaceId,
@@ -69,7 +69,7 @@ artilleryRouter.post('/artillery/:workspaceId', postCache, async (req, res) => {
       locationPointerUuid: uuid,
     };
 
-    const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
+    const origin = await WorkspaceLocation.create({ ...workspaceLocationGeoInfo });
 
     const cacheData = JSON.stringify({
       origin,
