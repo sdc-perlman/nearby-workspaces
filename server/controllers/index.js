@@ -22,10 +22,12 @@ const cache = (req, res, next) => {
       const {
         origin,
         nearbyWorkspaces,
+        photoIds,
       } = JSON.parse(data);
       res.status(200).json({
         origin,
         nearbyWorkspaces,
+        photoIds,
         allWorkspaceInfo,
         photos,
       });
@@ -50,10 +52,11 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
       },
     });
 
-    // const { data: photos } = await axios.get(`http://localhost:5001/api/photos/${workspaceId}?ids=${locationPointers.map((x) => x.workspaceId).join(',')}`);
+    const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
     const cacheData = JSON.stringify({
       origin,
       nearbyWorkspaces,
+      photoIds,
     });
 
     client.setex(workspaceId, 3600, cacheData);

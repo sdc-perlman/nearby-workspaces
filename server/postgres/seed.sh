@@ -8,7 +8,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # if parameter 1 is not passed as argument default records to be generated to 10 million rows for 2 tables
-LINES=${1:-10}
+LINES=${1:-10000000}
 INIT="init"
 
 
