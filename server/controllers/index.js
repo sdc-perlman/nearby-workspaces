@@ -1,41 +1,14 @@
-const axios = require('axios');
 const workspaceRouter = require('express').Router();
 const { Sequelize } = require('sequelize');
 const reverse = require('reverse-geocode');
-const redis = require('redis');
 const sequelize = require('../postgres/index');
 
 const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
+const { cache, client } = require('../middleware');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
 
 const Op = Sequelize.Op;
-const client = redis.createClient(6379);
-
-const cache = (req, res, next) => {
-  const { workspaceId } = req.params;
-  client.get(workspaceId, (err, data) => {
-    if (err) {
-      res.status(err.status || 500)
-        .send({ success: false, status: err.status || 500, message: err.message });
-    } else if (data !== null) {
-      const {
-        origin,
-        nearbyWorkspaces,
-        photoIds,
-      } = JSON.parse(data);
-      res.status(200).json({
-        origin,
-        nearbyWorkspaces,
-        photoIds,
-        allWorkspaceInfo,
-        photos,
-      });
-    } else {
-      next();
-    }
-  });
-};
 
 workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
   try {
