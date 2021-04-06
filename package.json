@@ -13,8 +13,10 @@
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",
     "test-server": "jest server/spec --detectOpenHandles --forceExit",
-    "artillery-get": "artillery run stress-test/artillery-get.yml",
-    "artillery-post": "artillery run stress-test/artillery-post.yml"
+    "local-stress-get": "artillery run stress-test/local-get.yml",
+    "local-stress-post": "artillery run stress-test/local-post.yml",
+    "proxy-stress-get": "artillery run stress-test/proxy-get.yml",
+    "proxy-stress-post": "artillery run stress-test/proxy-post.yml"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",

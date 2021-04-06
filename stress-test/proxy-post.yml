@@ -1,0 +1,24 @@
+config:
+  target: "http://localhost:6002/api/nearbyworkspaces"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+      name: Warm up phase
+    - pause: 10
+      name: Break 1
+    - duration: 10
+      arrivalRate: 5
+      rampTo: 100
+      name: Ramp up load
+    - pause: 10
+      name: Break 2
+    - duration: 60
+      arrivalRate: 1000
+      name: Sustained load
+scenarios:
+  - flow:
+    - post:
+          url: "/buildings/artillery/10000002"
+          json:
+            long: "-92.701"
+            lat: "35.5889"
