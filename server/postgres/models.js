@@ -12,9 +12,8 @@ LocationPointer.init({
     type: DataTypes.INTEGER,
     unique: true,
   },
-  geog: {
-    type: DataTypes.GEOGRAPHY('POINT'),
-  },
+  longitude: DataTypes.DOUBLE,
+  latitude: DataTypes.DOUBLE,
 }, {
   sequelize,
   timestamps: false,
@@ -74,6 +73,14 @@ WorkspaceLocation.init({
     defaultValue: 'Not listed',
   },
   zipCode: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  amenities: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  rate: {
     type: DataTypes.STRING,
     defaultValue: 'Not listed',
   },
