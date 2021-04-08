@@ -1,6 +1,7 @@
 const redis = require('redis');
 
 const client = redis.createClient(6379);
+const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
 
 const cache = (req, res, next) => {
   const { workspaceId } = req.params;

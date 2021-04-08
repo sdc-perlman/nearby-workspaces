@@ -1,11 +1,28 @@
 config:
   target: "http://localhost:5001/api/nearbyworkspaces"
   phases:
-    - duration: 10
-      arrivalRate: 10
-      name: Warm up the cache
-    # - pause: 10
-    #   name: Break 1
+    - duration: 120
+      arrivalRate: 1000
+      maxVusers: 1500
+      name: Warm up the cache (phase 1)
+    - duration: 120
+      arrivalRate: 1000
+      rampTo: 1500
+      maxVusers: 1500
+      name: Warm up the cache (phase 2)
+    - pause: 10
+      name: Break 1
+    - duration: 120
+      arrivalRate: 1500
+      rampTo: 2000
+      maxVusers: 2000
+      name: Warm up the cache (phase 3)
+    - pause: 10
+      name: Break 2
+    - duration: 120
+      arrivalRate: 2000
+      maxVusers: 2000
+      name: Warm up the cache (phase 4)
     # - duration: 10
     #   arrivalRate: 5
     #   rampTo: 100

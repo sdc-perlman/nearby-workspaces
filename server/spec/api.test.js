@@ -18,11 +18,8 @@ afterAll(async () => {
 describe('CRUD API Endpoints Tests', () => {
   it('should Create a new record in the LocationPointers table based on coordinates which will update the WorkspaceLocations table with the correct location information.', async (done) => {
     const sampleLocationInput = {
-      geog: {
-        crs: { type: 'name', properties: { name: 'EPSG:4326' } },
-        type: 'Point',
-        coordinates: [-92.701, 35.5889],
-      },
+      longitude: -92.701,
+      latitude: 35.5889,
     };
 
     const reverseGeoInfo = {

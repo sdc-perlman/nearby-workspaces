@@ -14,23 +14,16 @@ ALTER TABLE ONLY public."WorkspaceLocations"
     ON DELETE CASCADE;
 `;
 
-// const keyQuery2 = `
-// ALTER TABLE ONLY public."LocationPointers"
-//     ADD CONSTRAINT LocationPointers_fkey
-//     FOREIGN KEY ("locationPointerUuid")
-//     REFERENCES public."LocationPointers" (uuid)
-//     ON DELETE CASCADE;
-// `;
-
-// const indexQuery = `
-// CREATE INDEX "geogIndex"
-//     ON public."LocationPointers"
-//     USING GIST (geog);
-// `;
+const indexQuery = `
+CREATE INDEX "spatialIndex"
+    ON public."LocationPointers"
+    USING GIST (ll_to_earth(latitude, longitude));
+`;
 
 (async () => {
   try {
     await sequelize.query(keyQuery);
+    // await sequelize.query(indexQuery);
     console.log('KEYS GENERATED');
     process.exit();
   } catch (err) {

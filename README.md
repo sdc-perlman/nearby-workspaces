@@ -20,7 +20,6 @@
 
 - Node 6.13.0
 - PostgreSQL v13.2+
-- PostGIS 3.1
 
 ## Setup & Seed
 
@@ -29,7 +28,7 @@
 ```console
 npm install
 ```
-2.) Run seed script (should take 15-17 minutes). To follow along checkout the `seed.sh` file located in `server/postgres`
+2.) Run seed script (should take 20-23 minutes). To follow along checkout the `seed.sh` file located in `server/postgres`
 
 ```console
 npm run seed

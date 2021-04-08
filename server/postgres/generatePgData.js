@@ -24,7 +24,7 @@ const generatePgData = (id) => {
   const rawAddress = `${streetNumber} ${streetName}, ${city}, ${state} ${zipCode}, USA`;
   const locationPointerUuid = uuid();
 
-  locationPointersData += `${locationPointerUuid}|${id}|(${faker.address.longitude(-117, -82)}|${faker.address.latitude(33, 41)})\n`;
+  locationPointersData += `${locationPointerUuid}|${id}|${Number(faker.address.longitude(-117, -82))}|${Number(faker.address.latitude(33, 41))}\n`;
 
   workspaceLocationsData += `${uuid()}|${faker.lorem.slug()}|${id}|${rawAddress}|${rawAddress}|${streetName}|${streetNumber}|${neighborhood}|${city}|${state}|United States|US|${zipCode}|${amenities}|${rate}|${locationPointerUuid}\n`;
 

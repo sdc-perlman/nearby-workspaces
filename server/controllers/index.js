@@ -13,10 +13,14 @@ const Op = Sequelize.Op;
 workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
   try {
     const { workspaceId } = req.params;
-    const { dataValues: origin, LocationPointer: { geog: { coordinates: [long, lat] } } } = await
+    const { dataValues: origin, LocationPointer: { longitude, latitude } } = await
     WorkspaceLocation.findOne({ where: { workspaceId }, include: [LocationPointer] });
 
-    const [locationPointers] = await sequelize.query(`SELECT * FROM public."LocationPointers" ORDER BY geog <-> 'SRID=4326;POINT(${long} ${lat})' LIMIT 4;`);
+    const [locationPointers] = await sequelize.query(`
+      SELECT * FROM public."LocationPointers"
+      WHERE earth_box(ll_to_earth(${latitude}, ${longitude}), 160934.4) @> ll_to_earth(latitude, longitude)
+      LIMIT 4;`);
+
     const nearbyWorkspaces = await WorkspaceLocation.findAll({
       where: {
         workspaceId: {
@@ -51,7 +55,7 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   req.body.workspaceId = workspaceId;
   try {
-    const { uuid, geog: { coordinates: [long, lat] } } = await
+    const { uuid, longitude: long, latitude: lat } = await
     LocationPointer.create({ ...req.body });
 
     const revGeo = reverse.lookup(lat, long, 'us');

@@ -31,8 +31,8 @@ sequelize.sync({ force: true })
           try {
             await fs.writeFile(workspaceLocationsFile, workspaceLocations);
             await fs.writeFile(locationPointersFile, locationPointers);
-            const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","geog") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
-            const rawQuery2 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode","locationPointerUuid") FROM '${path.join(__dirname, './dataFiles/workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
+            const rawQuery1 = `COPY public."LocationPointers" ("uuid","workspaceId","longitude","latitude") FROM '${path.join(__dirname, './dataFiles/locationPointers.csv')}' WITH DELIMITER AS '|';`;
+            const rawQuery2 = `COPY public."WorkspaceLocations" ("uuid","workspaceSlug","workspaceId","rawAddress","formattedAddress","streetName","streetNumber","neighborhood","city","state","country","countryCode","zipCode","amenities","rate","locationPointerUuid") FROM '${path.join(__dirname, './dataFiles/workspaceLocations.csv')}' WITH DELIMITER AS '|';`;
             await sequelize.query(rawQuery1);
             await sequelize.query(rawQuery2);
           } catch (err) {
