@@ -5,5 +5,5 @@ export default () => {
     <div>
       <h3 className="nb-section-title">Nearby Buildings</h3>
     </div>
-  )
+  );
 };

@@ -8,7 +8,6 @@ const nearbyAPI = '/api/nearbyworkspaces';
 
 export default () => {
   const [locs, setLocs] = useState(null);
-  const [allInfo, setAllInfo] = useState([]);
   const [pic, setPic] = useState([]);
 
   useEffect(async () => {
@@ -19,9 +18,8 @@ export default () => {
       if (Number.isNaN(rawId)) {
         throw new Error('no id');
       }
-      const { data: { nearbyWorkspaces, allWorkspaceInfo, photos } } = await axios.get(`${nearbyAPI}/buildings/${rawId}`);
+      const { data: { nearbyWorkspaces, photos } } = await axios.get(`${nearbyAPI}/buildings/${rawId}`);
       setLocs(nearbyWorkspaces);
-      setAllInfo(allWorkspaceInfo);
       setPic(photos);
     } catch (err) {
       console.log(err);
@@ -41,7 +39,6 @@ export default () => {
           <Workspace
             key={location.workspaceId}
             location={location}
-            allInfo={allInfo}
             pic={pic}
           />
         ))}
