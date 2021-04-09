@@ -8,7 +8,6 @@ const express = require('express');
 
 const workspaceRouter = require('./controllers');
 const placeholderData = require('./placeholderData');
-const artilleryRouter = require('../stress-test/artillery-controller');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -20,9 +19,6 @@ app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'c
 
 // Main Route
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
-
-// Stress Test Route
-app.use('/api/nearbyworkspaces/buildings/artillery', artilleryRouter);
 
 // Service Data Dependencies
 app.get('/api/photos/:id', (req, res) => {

@@ -1,21 +1,14 @@
 config:
   target: "http://localhost:5001/api/nearbyworkspaces"
   phases:
-    - duration: 60
+    - duration: 5
+      arrivalRate: 1
+    - duration: 10
+      arrivalRate: 10
+    - duration: 15
       arrivalRate: 100
-      name: Initial
-    - pause: 10
-      name: Break
     - duration: 60
-      arrivalRate: 100
-      rampTo: 150
-      name: Ramp Up 1
-    - pause: 10
-      name: Break
-    - duration: 60
-      arrivalRate: 150
-      rampTo: 200
-      name: Ramp Up 2
+      arrivalRate: 1000
   payload:
     path: "workspaceIds.csv"
     fields:
