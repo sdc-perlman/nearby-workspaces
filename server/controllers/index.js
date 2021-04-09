@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 const reverse = require('reverse-geocode');
 const sequelize = require('../postgres/index');
 
-const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
+const { photosData: photos } = require('../placeholderData');
 const { cache, client } = require('../middleware');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
@@ -31,7 +31,6 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
 
     const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
     const cacheData = JSON.stringify({
-      origin,
       nearbyWorkspaces,
       photoIds,
     });
@@ -41,7 +40,6 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
     res.status(200).json({
       origin,
       nearbyWorkspaces,
-      allWorkspaceInfo,
       photos,
     });
   } catch (err) {
