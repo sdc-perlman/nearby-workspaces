@@ -13,10 +13,9 @@
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",
     "test-server": "jest server/spec --detectOpenHandles --forceExit",
-    "app-stress-get": "artillery run stress-test/app-get.yml",
-    "app-stress-post": "artillery run stress-test/app-post.yml",
-    "proxy-stress-get": "artillery run stress-test/proxy-get.yml",
-    "proxy-stress-post": "artillery run stress-test/proxy-post.yml"
+    "app-stress": "artillery run stress-test/app-stresstest.yml",
+    "proxy-stress": "artillery run stress-test/proxy-stresstest.yml",
+    "warmup-cache": "artillery run stress-test/warmup-cache.yml"
   },
   "dependencies": {
     "@babel/core": "^7.12.10",

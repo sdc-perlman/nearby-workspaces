@@ -35,7 +35,7 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
       photoIds,
     });
 
-    client.setex(workspaceId, 3600, cacheData);
+    client.setex(workspaceId, 14400, cacheData);
 
     res.status(200).json({
       origin,

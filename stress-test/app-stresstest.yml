@@ -1,0 +1,26 @@
+config:
+  target: "http://localhost:5001/api/nearbyworkspaces"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: Initial
+    - pause: 10
+      name: Break
+    - duration: 60
+      arrivalRate: 100
+      rampTo: 150
+      name: Ramp Up 1
+    - pause: 10
+      name: Break
+    - duration: 60
+      arrivalRate: 150
+      rampTo: 200
+      name: Ramp Up 2
+  payload:
+    path: "workspaceIds.csv"
+    fields:
+      - "workspaceId"
+scenarios:
+  - flow:
+    - get:
+        url: "/buildings/{{ workspaceId }}"
