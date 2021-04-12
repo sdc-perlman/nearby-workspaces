@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 
-const user = 'munzmoses';
-const host = 'localhost';
-const database = 'workspacelocations';
-const password = '';
+const user = process.env.PG_USER || 'munzmoses';
+const host = process.env.HOST || 'localhost';
+const database = process.env.PG_DB || 'workspacelocations';
+const password = process.env.PG_PASSWORD || '';
 
 const sequelize = new Sequelize(database, user, password, {
   host,

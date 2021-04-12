@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon server/initServer.js",
+    "start": "node server/initServer.js",
     "dev-build": "webpack --watch",
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",

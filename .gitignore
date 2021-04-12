@@ -30,3 +30,4 @@ build/
 client/dist/nearby.js
 client/dist/nearby.js.LICENSE.txt
 
+pgdata
