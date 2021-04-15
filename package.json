@@ -14,11 +14,16 @@
     "build": "webpack",
     "seed": "cd server/postgres && bash seed.sh",
     "test-server": "jest server/spec --detectOpenHandles --forceExit",
-    "app-stress": "artillery run stress-test/app-stresstest.yml",
-    "proxy-stress": "artillery run stress-test/proxy-stresstest.yml",
+    "app-stress-get": "artillery run stress-test/app-stress-get.yml",
+    "app-stress-post": "artillery run stress-test/app-stress-post.yml",
+    "proxy-stress-get": "artillery run stress-test/proxy-stress-get.yml",
+    "proxy-stress-post": "artillery run stress-test/proxy-stress-post.yml",
     "warmup-cache": "artillery run stress-test/warmup-cache.yml"
   },
   "dependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
     "aws-sdk": "^2.839.0",
     "axios": "^0.21.1",
     "cors": "^2.8.5",

@@ -52,9 +52,12 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
 workspaceRouter.post('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   req.body.workspaceId = workspaceId;
+  req.body.longitude = Number(req.body.longitude);
+  req.body.latitude = Number(req.body.latitude);
+  console.log(req.body);
   try {
-    const { uuid, longitude: long, latitude: lat } = await
-    LocationPointer.create({ ...req.body });
+    const [{ uuid, longitude: long, latitude: lat }] = await
+    LocationPointer.upsert({ ...req.body });
 
     const revGeo = reverse.lookup(lat, long, 'us');
     const workspaceLocationGeoInfo = {
@@ -65,7 +68,7 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
       locationPointerUuid: uuid,
     };
 
-    const origin = await WorkspaceLocation.create({ ...workspaceLocationGeoInfo });
+    const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
 
     res.status(200).json({ origin, revGeo });
   } catch (err) {
