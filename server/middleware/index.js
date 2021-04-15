@@ -1,6 +1,11 @@
 const redis = require('redis');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../', '.env') });
 
-const client = redis.createClient(process.env.REDIS_URL || 6379);
+const client = redis.createClient({
+  host: process.env.REDIS_URL,
+  port: process.env.REDIS_PORT,
+});
 const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
 
 const cache = (req, res, next) => {

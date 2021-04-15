@@ -1,9 +1,12 @@
 const { Sequelize } = require('sequelize');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../', '.env') });
 
-const user = process.env.PG_USER || 'munzmoses';
-const host = process.env.HOST || 'localhost';
-const database = process.env.PG_DB || 'workspacelocations';
-const password = process.env.PG_PASSWORD || '';
+const user = process.env.PG_USER;
+const host = process.env.HOST;
+const database = process.env.PG_DB;
+console.log(database);
+const password = process.env.PG_PASSWORD;
 
 const sequelize = new Sequelize(database, user, password, {
   host,
