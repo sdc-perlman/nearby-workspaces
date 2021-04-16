@@ -1,5 +1,5 @@
 config:
-  target: "http://localhost:5001/api/nearbyworkspaces"
+  target: "http://localhost:6002/api/nearbyworkspaces"
   phases:
     - duration: 60
       arrivalRate: 100

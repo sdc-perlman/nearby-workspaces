@@ -3,7 +3,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../', '.env') });
 
 const client = redis.createClient({
-  host: 'localhost' || process.env.REDIS_URL,
+  host: process.env.REDIS_URL,
   port: process.env.REDIS_PORT,
 });
 const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');

@@ -54,23 +54,27 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
   req.body.workspaceId = workspaceId;
   req.body.longitude = Number(req.body.longitude);
   req.body.latitude = Number(req.body.latitude);
-  console.log(req.body);
+
   try {
     const [{ uuid, longitude: long, latitude: lat }] = await
     LocationPointer.upsert({ ...req.body });
 
-    const revGeo = reverse.lookup(lat, long, 'us');
+    // more accurate geo locating for fun
+    // proves to be a bottleneck for stress test so commenting out for now
+    // const revGeo = reverse.lookup(lat, long, 'us');
+
     const workspaceLocationGeoInfo = {
       workspaceId,
-      city: revGeo.city,
-      state: revGeo.state_abbr,
-      zipCode: revGeo.zipcode,
+      // city: revGeo.city,
+      // state: revGeo.state_abbr,
+      // zipCode: revGeo.zipcode,
       locationPointerUuid: uuid,
     };
 
     const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
 
-    res.status(200).json({ origin, revGeo });
+    // will need to uncomment the reverse geo object and send it back for test to pass
+    res.status(200).json({ origin });
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)
