@@ -1,0 +1,21 @@
+config:
+  target: "http://localhost:5001/api/nearbyworkspaces"
+  phases:
+    - duration: 1350
+      arrivalRate: 1000
+      name: Warm up the cache (round 1)
+      maxVusers: 1000
+    - pause: 30
+      name: Break
+    - duration: 1350
+      arrivalRate: 1000
+      maxVusers: 1000
+      name: Warm up the cache (round 2)
+  payload:
+    path: "workspaceIds.csv"
+    fields:
+      - "workspaceId"
+scenarios:
+  - flow:
+    - get:
+        url: "/buildings/{{ workspaceId }}"

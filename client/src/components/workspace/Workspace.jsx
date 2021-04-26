@@ -1,35 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LoadingWorkspace from './LoadingWorkspace';
 // import { getWorkspaceInfo } from '../../actions';
 
-export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
+export default ({
+  location: {
+    workspaceId,
+    neighborhood,
+    amenities,
+    rate,
+    streetName,
+    streetNumber,
+  },
+  pic,
+}) => {
   // loading
-  if (allInfo.length === 0) {
+  if (!workspaceId) {
     return (
       <LoadingWorkspace />
     );
   }
 
   // conditionally render array of amenities data
-  function Amenities({ amenities: { amenities } }) {
+  function Amenities({ amenities: amens }) {
+    const amensArr = amens.split(',');
     if (!amenities) {
       return <></>;
     }
-    const rest = amenities.length - 5;
+    const rest = amensArr.length - 5;
     return (
       <>
-        {amenities.slice(0, 5).map((am) => (
-          <li key={`${am.name}-${am.id}`}>
+        {amensArr.map((am, id) => (
+          <li key={`${am}-${id}`}>
             &#8226;
-            {am.name}
+            {am}
           </li>
         ))}
         <br />
-        {rest > 0 && <li> + {rest} more </li>}
+        {rest > 0 && <li>{` + ${rest} more `}</li>}
       </>
     );
   }
-
+  // capitalize all words for neighborhood
+  neighborhood = neighborhood.replace(/\b\w/g, (c) => c.toUpperCase());
   // insert any available data into workspace-card
   return (
     <div className="nb-container">
@@ -40,12 +52,12 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
           </div>
           <div className="nb-description-container">
             <div>
-              <h3 className="nb-description-title ">{ allInfo.workspaceDescriptionData.name || ''}</h3>
+              <h3 className="nb-description-title ">{ `${streetNumber || ''} ${streetName || ''}`}</h3>
               <p className="light-text bold-text">{ neighborhood || ''}</p>
             </div>
             <div className="light-text small-text bold-text">
               <ul className="nb-amenities-list">
-                <Amenities amenities={allInfo.amenitiesData} />
+                <Amenities amenities={amenities} />
               </ul>
             </div>
           </div>
@@ -55,13 +67,17 @@ export default ({ location: { workspaceId, neighborhood }, allInfo, pic }) => {
             <p>Available workspace</p>
           </div>
           <div className="nb-pricing-price pad-10">
-            { allInfo.workspaceData.membership_rate ? (
-                <p>from <span className="bolder-text">${allInfo.workspaceData.membership_rate}/mo</span></p>
+            { rate ? (
+              <p>
+                {'from '}
+                <span className="bolder-text">
+                  {`$${rate.slice(0, 3)}/mo`}
+                </span>
+              </p>
             ) : <p>View Inventory</p>}
           </div>
         </div>
       </a>
     </div>
   );
-}
-
+};

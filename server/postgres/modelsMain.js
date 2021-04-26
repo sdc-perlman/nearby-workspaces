@@ -14,9 +14,8 @@ const LocationPointer = sequelize.define('LocationPointer', {
     type: DataTypes.INTEGER,
     unique: true,
   },
-  geog: {
-    type: DataTypes.GEOGRAPHY('POINT'),
-  },
+  longitude: DataTypes.DOUBLE,
+  latitude: DataTypes.DOUBLE,
 }, {
   timestamps: false,
   indexes: [
@@ -26,9 +25,14 @@ const LocationPointer = sequelize.define('LocationPointer', {
       using: 'HASH',
     },
     {
-      name: 'geogIndex',
-      fields: ['geog'],
-      using: 'GIST',
+      name: 'longitudeIndex',
+      fields: ['longitude'],
+      using: 'HASH',
+    },
+    {
+      name: 'latitudeIndex',
+      fields: ['latitude'],
+      using: 'HASH',
     },
   ],
 });
@@ -84,6 +88,14 @@ const WorkspaceLocation = sequelize.define('WorkspaceLocation', {
     defaultValue: 'Not listed',
   },
   zipCode: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  amenities: {
+    type: DataTypes.STRING,
+    defaultValue: 'Not listed',
+  },
+  rate: {
     type: DataTypes.STRING,
     defaultValue: 'Not listed',
   },

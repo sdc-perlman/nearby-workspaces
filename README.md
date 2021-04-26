@@ -12,20 +12,27 @@
 
 ## Table of Contents
 
-1. [Usage](#Usage)
-2. [Requirements](#requirements)
+1. [Requirements](#requirements)
+2. [Setup](#setup)
 3. [CRUD API](#crud)
-
-## Usage
-
->
 
 ## Requirements
 
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
 - Node 6.13.0
-- MongoDB v4+
+- PostgreSQL v13.2+
+
+## Setup & Seed
+
+1.) Install dependencies
+
+```console
+npm install
+```
+2.) Run seed script (should take 20-23 minutes). To follow along checkout the `seed.sh` file located in `server/postgres`
+
+```console
+npm run seed
+```
 
 ## CRUD API
 - See server/controllers/index.js to see the CRUD API. See server/spec/api.test.js to see the CRUD API tests. Use script `npm run test-server` to run the tests in the terminal.
@@ -49,4 +56,5 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 > Endpoint: "/api/nearbyworkspaces/buildings/:workspaceId"
 > Purpose: to delete the origin record based upon the workspaceId param.
 > Response: A 200 response and will return the record that was just deleted.
+> Response 2: A 500 indicating that the record is not there when prompted to retrieve it.
 

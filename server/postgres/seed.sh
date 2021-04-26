@@ -11,8 +11,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 LINES=${1:-10000000}
 INIT="init"
 
-
+# create database
 psql -d postgres -f createDb.sql
+
+# add necessary extensions for database
+psql -d postgres -d workspacelocations -f addExtensions.sql
 
 # seed database
 node pgSeeder.js --lines=$LINES

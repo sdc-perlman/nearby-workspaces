@@ -1,2 +1,2 @@
-DROP DATABASE IF EXISTS workspacelocations;
+DROP DATABASE IF EXISTS workspacelocations CASCADE;
 CREATE DATABASE workspacelocations;
