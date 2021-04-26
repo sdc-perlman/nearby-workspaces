@@ -22,8 +22,8 @@ CREATE INDEX "spatialIndex"
 
 (async () => {
   try {
-    await sequelize.query(keyQuery);
-    // await sequelize.query(indexQuery);
+    // await sequelize.query(keyQuery);
+    await sequelize.query(indexQuery);
     console.log('KEYS GENERATED');
     process.exit();
   } catch (err) {

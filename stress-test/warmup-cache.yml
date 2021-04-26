@@ -1,16 +1,36 @@
 config:
-  target: "http://localhost:5001/api/nearbyworkspaces"
+  target: "http://3.143.162.5:80"
+  http:
+    timeout: 10
   phases:
-    - duration: 1350
+    - duration: 300
       arrivalRate: 1000
       name: Warm up the cache (round 1)
       maxVusers: 1000
     - pause: 30
       name: Break
-    - duration: 1350
+    - duration: 300
       arrivalRate: 1000
       maxVusers: 1000
       name: Warm up the cache (round 2)
+    # - duration: 5
+    #   arrivalRate: 1
+    #   name: test
+    # - duration: 60
+    #   arrivalRate: 10
+    #   name: low
+    # - duration: 60
+    #   arrivalRate: 100
+    #   name: medium
+    # - duration: 60
+    #   arrivalRate: 150
+    #   name: medium-high
+    # - duration: 60
+    #   arrivalRate: 200
+    #   name: medium-high-2
+    # - duration: 60
+    #   arrivalRate: 1000
+    #   name: high
   payload:
     path: "workspaceIds.csv"
     fields:

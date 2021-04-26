@@ -4,13 +4,14 @@ const reverse = require('reverse-geocode');
 const sequelize = require('../postgres/index');
 
 const { photosData: photos } = require('../placeholderData');
-const { cache, client } = require('../middleware');
+// const { cache, client } = require('../middleware');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
 
 const Op = Sequelize.Op;
 
-workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
+// cache middleware taken out
+workspaceRouter.get('/:workspaceId', async (req, res) => {
   try {
     const { workspaceId } = req.params;
     const { dataValues: origin, LocationPointer: { longitude, latitude } } = await
@@ -29,13 +30,13 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
       },
     });
 
-    const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
-    const cacheData = JSON.stringify({
-      nearbyWorkspaces,
-      photoIds,
-    });
+    // const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
+    // const cacheData = JSON.stringify({
+    //   nearbyWorkspaces,
+    //   photoIds,
+    // });
 
-    client.setex(workspaceId, 14400, cacheData);
+    // client.setex(workspaceId, 14400, cacheData);
 
     res.status(200).json({
       origin,
@@ -52,22 +53,29 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
 workspaceRouter.post('/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   req.body.workspaceId = workspaceId;
-  try {
-    const { uuid, longitude: long, latitude: lat } = await
-    LocationPointer.create({ ...req.body });
+  req.body.longitude = Number(req.body.longitude);
+  req.body.latitude = Number(req.body.latitude);
 
-    const revGeo = reverse.lookup(lat, long, 'us');
+  try {
+    const [{ uuid, longitude: long, latitude: lat }] = await
+    LocationPointer.upsert({ ...req.body });
+
+    // more accurate geo locating for fun
+    // proves to be a bottleneck for stress test so commenting out for now
+    // const revGeo = reverse.lookup(lat, long, 'us');
+
     const workspaceLocationGeoInfo = {
       workspaceId,
-      city: revGeo.city,
-      state: revGeo.state_abbr,
-      zipCode: revGeo.zipcode,
+      // city: revGeo.city,
+      // state: revGeo.state_abbr,
+      // zipCode: revGeo.zipcode,
       locationPointerUuid: uuid,
     };
 
-    const origin = await WorkspaceLocation.create({ ...workspaceLocationGeoInfo });
+    const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
 
-    res.status(200).json({ origin, revGeo });
+    // will need to uncomment the reverse geo object and send it back for api test to pass
+    res.status(200).json({ origin });
   } catch (err) {
     console.log(err);
     res.status(err.status || 500)

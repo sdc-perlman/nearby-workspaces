@@ -8,21 +8,17 @@ const express = require('express');
 
 const workspaceRouter = require('./controllers');
 const placeholderData = require('./placeholderData');
-const artilleryRouter = require('../stress-test/artillery-controller');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(morgan('dev'));
 app.use(cors());
-app.use('/', express.static(path.join(__dirname, '../', 'client', 'dist')));
-app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'client', 'dist')));
+// app.use('/', express.static(path.join(__dirname, '../', 'dist')));
+// app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'dist')));
 
 // Main Route
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);
-
-// Stress Test Route
-app.use('/api/nearbyworkspaces/buildings/artillery', artilleryRouter);
 
 // Service Data Dependencies
 app.get('/api/photos/:id', (req, res) => {

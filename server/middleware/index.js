@@ -1,7 +1,12 @@
 const redis = require('redis');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../', '.env') });
 
-const client = redis.createClient(6379);
-const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
+const client = redis.createClient({
+  host: process.env.REDIS_URL,
+  port: process.env.REDIS_PORT,
+});
+const { photosData: photos } = require('../placeholderData');
 
 const cache = (req, res, next) => {
   const { workspaceId } = req.params;
@@ -19,7 +24,6 @@ const cache = (req, res, next) => {
         origin,
         nearbyWorkspaces,
         photoIds,
-        allWorkspaceInfo,
         photos,
       });
     } else {
