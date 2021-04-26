@@ -6,7 +6,7 @@ const client = redis.createClient({
   host: process.env.REDIS_URL,
   port: process.env.REDIS_PORT,
 });
-const { allWorkspaceInfo, photosData: photos } = require('../placeholderData');
+const { photosData: photos } = require('../placeholderData');
 
 const cache = (req, res, next) => {
   const { workspaceId } = req.params;
@@ -24,7 +24,6 @@ const cache = (req, res, next) => {
         origin,
         nearbyWorkspaces,
         photoIds,
-        allWorkspaceInfo,
         photos,
       });
     } else {

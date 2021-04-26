@@ -14,8 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(morgan('dev'));
 app.use(cors());
-app.use('/', express.static(path.join(__dirname, '../', 'dist')));
-app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'dist')));
+// app.use('/', express.static(path.join(__dirname, '../', 'dist')));
+// app.use('/buildings/:workspaceId', express.static(path.join(__dirname, '../', 'dist')));
 
 // Main Route
 app.use('/api/nearbyworkspaces/buildings', workspaceRouter);

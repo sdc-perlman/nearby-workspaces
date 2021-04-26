@@ -4,13 +4,14 @@ const reverse = require('reverse-geocode');
 const sequelize = require('../postgres/index');
 
 const { photosData: photos } = require('../placeholderData');
-const { cache, client } = require('../middleware');
+// const { cache, client } = require('../middleware');
 const { WorkspaceLocation, LocationPointer } = require('../postgres/modelsMain');
 require('../postgres/relationship');
 
 const Op = Sequelize.Op;
 
-workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
+// cache middleware taken out
+workspaceRouter.get('/:workspaceId', async (req, res) => {
   try {
     const { workspaceId } = req.params;
     const { dataValues: origin, LocationPointer: { longitude, latitude } } = await
@@ -29,13 +30,13 @@ workspaceRouter.get('/:workspaceId', cache, async (req, res) => {
       },
     });
 
-    const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
-    const cacheData = JSON.stringify({
-      nearbyWorkspaces,
-      photoIds,
-    });
+    // const photoIds = locationPointers.map((x) => x.workspaceId).join(',');
+    // const cacheData = JSON.stringify({
+    //   nearbyWorkspaces,
+    //   photoIds,
+    // });
 
-    client.setex(workspaceId, 14400, cacheData);
+    // client.setex(workspaceId, 14400, cacheData);
 
     res.status(200).json({
       origin,
@@ -73,7 +74,7 @@ workspaceRouter.post('/:workspaceId', async (req, res) => {
 
     const origin = await WorkspaceLocation.upsert({ ...workspaceLocationGeoInfo });
 
-    // will need to uncomment the reverse geo object and send it back for test to pass
+    // will need to uncomment the reverse geo object and send it back for api test to pass
     res.status(200).json({ origin });
   } catch (err) {
     console.log(err);
